@@ -5,21 +5,26 @@ from django.template.defaultfilters import slugify
 class Contact(models.Model):
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
-    full_name = models.CharField(max_length=128)
-    phone_number = models.CharField(max_length=11)
+    full_name = models.CharField(max_length=254)
+    phone_number = models.CharField(max_length=11, unique=True)
     email = models.EmailField(max_length=254)
-    GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female')
-    )
-    gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
-
-
-class Address(models.Model):
+    gender = models.CharField(max_length=6)
     street_address = models.CharField(max_length=254)
     city = models.CharField(max_length=128)
-    STATE_CHOICES = (
-        ('FL', 'FL'),
-    )
-    state = models.CharField(max_length=2, choices=STATE_CHOICES, default='FL')
-    zipcode = models.CharField(max_length=254)
+    state = models.CharField(max_length=2)
+    zip_code = models.CharField(max_length=254)
+    added_by = models.ForeignKey(User)
+
+    def save(self, *args, **kwargs):
+        self.full_name = '{0} {1}'.format(self.first_name, self.last_name)
+        super(Contact, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.full_name
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    gender = models.CharField(max_length=6)
+    phone_number = models.CharField(max_length=11)
+    def __str__(self):
+        return self.user.username
