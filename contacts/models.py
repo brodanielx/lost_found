@@ -21,6 +21,8 @@ class Contact(models.Model):
     state = models.CharField(max_length=2, choices=STATE_CHOICES, default='FL')
     zip_code = models.CharField(max_length=5)
     added_by = models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         self.full_name = '{0} {1}'.format(self.first_name, self.last_name)

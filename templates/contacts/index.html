@@ -5,6 +5,13 @@
     <title></title>
   </head>
   <body>
-    {{test}}
+    <h1>Lost Founds</h1>
+    {% if contacts %}
+      {% for c in contacts %}
+        <p>{{c.full_name}} - {{c.phone_number}}</p>
+      {% endfor %}
+    {% else %}
+      <p>There are no contacts</p>
+    {% endif %}
   </body>
 </html>

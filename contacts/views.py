@@ -3,13 +3,14 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-# from links.models import Category, Page, UserProfile
+from contacts.models import Contact, UserProfile
 from django.contrib.auth.models import User
 # from links.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from datetime import datetime
 
 def index(request):
+    contact_list = Contact.objects.order_by('-created_at')[:5]
     context = {
-        'test' : 'this is a test'
+        'contacts' : contact_list
     }
     return render(request, 'contacts/index.html', context)
