@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    {% if contact %}
+      <h1>{{ contact.gender }} {{ contact.full_name }}</h1>
+      <p>Phone Number: {{ contact.phone_number }}</p>
+      <p>Email Address: {{ contact.email }}</p>
+      <p>Street Address: {{ contact.street_address }}  </p>
+      <p>City/State/Zip: {{ contact.city }}, {{ contact.state }} {{ contact.zip_code }}</p>
+      <p>Added By: {{ contact.added_by }}</p>
+      <p>Date Added: {{ contact.created_at|date:"n/j/y g:i A" }}</p>
+      <p>Last Modified: {{ contact.updated_at|date:"n/j/y g:i A" }}</p>
+    {% else %}
+      <p>This contact does not exist</p>
+    {% endif %}
+  </body>
+</html>

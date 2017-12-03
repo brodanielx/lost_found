@@ -4,8 +4,8 @@ from django.template.defaultfilters import slugify
 
 class Contact(models.Model):
     GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
+        ('Bro', 'Brother'),
+        ('Sis', 'Sister'),
     )
     STATE_CHOICES = (
         ('FL', 'Florida'),
@@ -15,9 +15,9 @@ class Contact(models.Model):
     full_name = models.CharField(max_length=254)
     phone_number = models.CharField(max_length=11, unique=True)
     email = models.EmailField(max_length=254)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=3, choices=GENDER_CHOICES)
     street_address = models.CharField(max_length=254)
-    city = models.CharField(max_length=128)
+    city = models.CharField(max_length=128, default='Tampa')
     state = models.CharField(max_length=2, choices=STATE_CHOICES, default='FL')
     zip_code = models.CharField(max_length=5)
     added_by = models.ForeignKey(User)

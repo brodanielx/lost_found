@@ -14,3 +14,8 @@ def index(request):
         'contacts' : contact_list
     }
     return render(request, 'contacts/index.html', context)
+
+def show_contact(request, pk):
+    contact = get_object_or_404(Contact, pk=pk)
+    context = {'contact' : contact}
+    return render(request, 'contacts/contact.html', context)

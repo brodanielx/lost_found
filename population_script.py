@@ -11,12 +11,13 @@ def populate():
 
     user = User.objects.get(username='brodanielx')
     email = 'bro.danielx@gmail.com'
+    city = 'Tampa'
     state = 'FL'
 
     first_names = ['Once', 'Was', 'Lost']
     last_names = ['Now', 'Iam', 'Found']
     phone_numbers = ['8131234321', '8139865432', '7277655678']
-    genders = ['M', 'F', 'M']
+    genders = ['Bro', 'Sis', 'Bro']
 
     for i in range(0, len(phone_numbers)):
         add_contact(first_names[i], last_names[i], phone_numbers[i], email ,genders[i], state, user)

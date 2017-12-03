@@ -8,7 +8,7 @@
     <h1>Lost Founds</h1>
     {% if contacts %}
       {% for c in contacts %}
-        <p>{{c.full_name}} - {{c.phone_number}}</p>
+        <p><a href="{% url 'contacts:show_contact' c.pk %}">{{c.full_name}}</a> ({{c.phone_number}})</p>
       {% endfor %}
     {% else %}
       <p>There are no contacts</p>
