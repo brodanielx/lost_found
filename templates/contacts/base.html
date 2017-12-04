@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Contacts |
+          {% block title_block %}
+            Home
+          {% endblock %}
+    </title>
+  </head>
+  <body>
+    <div>
+      {% block body_block %}
+      {% endblock %}
+    </div>
+    <hr>
+    <div>
+      <ul>
+        <li><a href="{% url 'contacts:index' %}">Home</a></li>
+      </ul>
+    </div>
+  </body>
+</html>

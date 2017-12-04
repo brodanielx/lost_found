@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <h1>Lost Founds</h1>
-    {% if contacts %}
-      {% for c in contacts %}
-        <p><a href="{% url 'contacts:show_contact' c.pk %}">{{c.full_name}}</a> ({{c.phone_number}})</p>
-      {% endfor %}
-    {% else %}
-      <p>There are no contacts</p>
-    {% endif %}
-  </body>
-</html>
+{% extends 'contacts/base.html' %}
+
+{% load staticfiles %}
+
+{% block body_block %}
+  <h1>Lost Founds</h1>
+  {% if contacts %}
+    {% for c in contacts %}
+      <p><a href="{% url 'contacts:show_contact' c.pk %}">{{c.full_name}}</a> ({{c.phone_number}})</p>
+    {% endfor %}
+  {% else %}
+    <p>There are no contacts</p>
+  {% endif %}
+{% endblock %}
