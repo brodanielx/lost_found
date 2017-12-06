@@ -10,18 +10,25 @@ from contacts.forms import ContactForm
 
 from datetime import datetime
 
+@login_required
 def index(request):
-    contact_list = Contact.objects.order_by('-created_at')[:5]
+    # contact_list = Contact.objects.order_by('-created_at')[:5]
+    contact_list = Contact.objects.filter(
+        added_by=request.user
+    ).order_by('-created_at')[:5]
     context = {
-        'contacts' : contact_list
+        'contacts' : contact_list,
+        'user' : request.user
     }
     return render(request, 'contacts/index.html', context)
 
+@login_required
 def show_contact(request, pk):
     contact = get_object_or_404(Contact, pk=pk)
     context = {'contact' : contact}
     return render(request, 'contacts/contact.html', context)
 
+@login_required
 def add_contact(request):
     form = ContactForm()
     if request.method == 'POST':

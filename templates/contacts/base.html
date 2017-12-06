@@ -17,8 +17,14 @@
     <hr>
     <div>
       <ul>
-        <li><a href="{% url 'contacts:index' %}">Home</a></li>
-        <li><a href="{% url 'contacts:add_contact' %}">Add Contact</a></li>
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'contacts:index' %}">Home</a></li>
+          <li><a href="{% url 'contacts:add_contact' %}">Add Contact</a></li>
+          <li><a class="nav-link" href="{% url 'auth_password_change' %}">Change Password</a></li>
+          <li><a href="{% url 'auth_logout' %}?next=/contacts/">Logout</a></li>
+        {% else %}
+          <li><a href="{% url 'auth_login' %}">Login</a></li>
+        {% endif %}
       </ul>
     </div>
   </body>

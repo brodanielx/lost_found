@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'contacts'
+    'contacts',
+    'registration'
 ]
 
 MIDDLEWARE = [
@@ -125,3 +126,9 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+REGISTRATION_OPEN = False
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = '/contacts/'
+LOGIN_URL = '/accounts/login/'

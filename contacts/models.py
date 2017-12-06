@@ -2,11 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 
+GENDER_CHOICES = (
+    ('Bro', 'Brother'),
+    ('Sis', 'Sister'),
+)
+
 class Contact(models.Model):
-    GENDER_CHOICES = (
-        ('Bro', 'Brother'),
-        ('Sis', 'Sister'),
-    )
+
     STATE_CHOICES = (
         ('FL', 'Florida'),
     )
@@ -32,8 +34,15 @@ class Contact(models.Model):
         return self.full_name
 
 class UserProfile(models.Model):
+    POST_CHOICES = (
+        ('Coor', 'Study Group Coordinator'),
+        ('FOICapt', 'FOI Captain'),
+        ('MGTCapt', 'MGT Captain'),
+        ('Sect', 'Secretary'),
+    )
     user = models.OneToOneField(User)
-    gender = models.CharField(max_length=6)
+    gender = models.CharField(max_length=3, choices=GENDER_CHOICES)
     phone_number = models.CharField(max_length=11)
+    post = models.CharField(max_length=7, choices=POST_CHOICES, default='FL')
     def __str__(self):
         return self.user.username
