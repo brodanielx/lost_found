@@ -6,7 +6,7 @@ class ContactAdmin(admin.ModelAdmin):
     search_fields = ['full_name']
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('gender','user')
+    list_display = ('user', 'gender', 'phone_number', 'post')
     search_fields = ['user']
 
 admin.site.register(Contact, ContactAdmin)

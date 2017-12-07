@@ -43,6 +43,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     gender = models.CharField(max_length=3, choices=GENDER_CHOICES)
     phone_number = models.CharField(max_length=11)
-    post = models.CharField(max_length=7, choices=POST_CHOICES, default='FL')
+    post = models.CharField(max_length=7, choices=POST_CHOICES)
     def __str__(self):
         return self.user.username
