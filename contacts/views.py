@@ -6,19 +6,23 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from contacts.models import Contact, UserProfile
 from contacts.forms import ContactForm
-from datetime import datetime
+import datetime
 import logging
 
-logging.basicConfig(filename='test.log', level=logging.DEBUG,
-    format='%(asctime)s:%(levelname)s:%(message)s')
+# logging.basicConfig(filename='test.log', level=logging.DEBUG,
+#     format='%(asctime)s:%(levelname)s:%(message)s')
 
 @login_required
 def index(request):
-    #filter contacts added by created_at >= two weeks ago
-    contact_list = Contact.objects.order_by('-created_at')[:5]
+    #make tdelat have a tz
+    tdelta = datetime.date.today() - datetime.timedelta(days=14)
+    contact_list = Contact.objects.filter(
+                        created_at__gte=tdelta
+                        ).order_by('-created_at')
     context = {
         'contacts' : contact_list,
-        'user' : request.user
+        'user' : request.user,
+        'tdelta' : tdelta
     }
     return render(request, 'contacts/index.html', context)
 
@@ -59,3 +63,5 @@ def add_contact(request):
             print(form.errors)
     context = {'form' : form}
     return render(request, 'contacts/add_contact.html', context)
+
+# def stats(request):
