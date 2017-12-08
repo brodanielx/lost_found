@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from contacts.models import Contact, UserProfile
 from contacts.forms import ContactForm
 import datetime
+import pytz
 import logging
 
 # logging.basicConfig(filename='test.log', level=logging.DEBUG,
@@ -14,15 +15,20 @@ import logging
 
 @login_required
 def index(request):
-    #make tdelat have a tz
-    tdelta = datetime.date.today() - datetime.timedelta(days=14)
+    tdelta = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=14)
     contact_list = Contact.objects.filter(
                         created_at__gte=tdelta
                         ).order_by('-created_at')
+                        
+    active_users = [contact_list[0]]
+    for i in range(1, contact_list):
+        if contact_list[i].added_by == contact_list[i-1].added_by:
+            active_users.append(contact_list[i].added_by)
+
+
     context = {
         'contacts' : contact_list,
         'user' : request.user,
-        'tdelta' : tdelta
     }
     return render(request, 'contacts/index.html', context)
 
