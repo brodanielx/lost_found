@@ -15,20 +15,33 @@ import logging
 
 @login_required
 def index(request):
-    tdelta = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=14)
-    contact_list = Contact.objects.filter(
+    userprofile = UserProfile.objects.get(user=request.user)
+
+    now = datetime.datetime.now(pytz.utc)
+    tdelta = now - datetime.timedelta(days=14)
+    recent_contacts_list = Contact.objects.filter(
                         created_at__gte=tdelta
                         ).order_by('-created_at')
-                        
-    active_users = [contact_list[0]]
-    for i in range(1, contact_list):
-        if contact_list[i].added_by == contact_list[i-1].added_by:
-            active_users.append(contact_list[i].added_by)
 
+    active_users = [recent_contacts_list[0].added_by]
+    for i in range(1, len(recent_contacts_list)):
+        if recent_contacts_list[i].added_by != recent_contacts_list[i-1].added_by:
+            active_users.append(recent_contacts_list[i].added_by)
+
+    recently_added_counts = []
+    for user in active_users:
+        recently_added_count = recent_contacts_list.filter(
+                                        added_by=user).count()
+        recently_added_counts.append({
+            'user': user,
+            'count': recently_added_count
+        })
 
     context = {
-        'contacts' : contact_list,
-        'user' : request.user,
+        'userprofile' : userprofile,
+        'recently_added_counts' : recently_added_counts,
+        'now' : now,
+        'tdelta' : tdelta
     }
     return render(request, 'contacts/index.html', context)
 

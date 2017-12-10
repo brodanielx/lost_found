@@ -4,13 +4,17 @@
 
 {% block body_block %}
 <h1>Lost Founds</h1>
-  <p>As Salaam Alaikum {{user.first_name}}</p>
-  {{two_weeks_ago}}
-  {% if contacts %}
-    {% for c in contacts %}
-      <p>{{c.full_name}} - {{c.added_by}} - {{c.created_at|date:"n/j/y g:i A"}}</p>
+  <p>As Salaam Alaikum {{userprofile.gender}} {{userprofile.user.first_name}}</p>
+  <h2>Recent Activity</h2>
+  <h4>{{ tdelta|date:"n/j/y" }} - {{ now|date:"n/j/y" }}</h4>
+  {% if recently_added_counts %}
+    {% for c in recently_added_counts %}
+      <p>{{c.user.username}} added {{c.count}}
+        {% if c.count > 1 %} contacts.
+        {% else %} contact.
+        {% endif %}</p>
     {% endfor %}
   {% else %}
-    <p>There are no contacts</p>
+    <p>No contacts have been added since {{ tdelta }}.</p>
   {% endif %}
 {% endblock %}
