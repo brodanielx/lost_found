@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^addcontact/$', views.add_contact, name='add_contact'),
     url(r'^contact/(?P<pk>[\w\-]+)/$',
         views.show_contact, name='show_contact'),
+    url(r'^history/$', views.history, name='history'),
 ]

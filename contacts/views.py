@@ -37,15 +37,24 @@ def index(request):
             'count': recently_added_count
         })
 
+    total_contacts = Contact.objects.all().count()
+
     context = {
         'userprofile' : userprofile,
         'recently_added_counts' : recently_added_counts,
         'now' : now,
-        'tdelta' : tdelta
+        'tdelta' : tdelta,
+        'total_contacts' : total_contacts
     }
     return render(request, 'contacts/index.html', context)
 
-# def timeline(request):
+@login_required #only laborers can see 
+def history(request):
+    contacts = Contact.objects.order_by('-updated_at')[:100]
+    context = {
+        'contacts' : contacts
+    }
+    return render(request, 'contacts/history.html', context)
 
 
 @login_required

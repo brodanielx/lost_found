@@ -1,0 +1,26 @@
+{% extends 'contacts/base.html' %}
+
+{% load staticfiles %}
+
+{% block title_block %}
+  History
+{% endblock %}
+
+{% block body_block %}
+
+  <h1>History</h1>
+  {% if contacts %}
+    {% for c in contacts %}
+      <p>{{ c.updated_at|date:"n/j g:i a" }} - {{ c.added_by }}
+      {% if c.updated_at != c.created_at %}
+        updated
+      {% else %}
+        added
+      {% endif %}{{ c.full_name }}
+    </p>
+    {% endfor %}
+  {% else %}
+    <p>There are no contacts</p>
+  {% endif %}
+
+{% endblock %}

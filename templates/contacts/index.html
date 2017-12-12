@@ -5,6 +5,7 @@
 {% block body_block %}
 <h1>Lost Founds</h1>
   <p>As Salaam Alaikum {{userprofile.gender}} {{userprofile.user.first_name}}</p>
+  <h3>Lost Founds Added: {{total_contacts}}</h3>
   <h2>Recent Activity</h2>
   <h4>{{ tdelta|date:"n/j/y" }} - {{ now|date:"n/j/y" }}</h4>
   {% if recently_added_counts %}
