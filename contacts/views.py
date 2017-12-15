@@ -19,36 +19,58 @@ def index(request):
 
     now = datetime.datetime.now(pytz.utc)
     tdelta = now - datetime.timedelta(days=14)
-    recent_contacts_list = Contact.objects.filter(
+    recently_added = Contact.objects.filter(
                         created_at__gte=tdelta
-                        ).order_by('-created_at')
+                        ).filter(
+                        added_by=request.user
+                        ).order_by('-created_at')[:5]
 
-    active_users = [recent_contacts_list[0].added_by]
-    for i in range(1, len(recent_contacts_list)):
-        if recent_contacts_list[i].added_by != recent_contacts_list[i-1].added_by:
-            active_users.append(recent_contacts_list[i].added_by)
-
-    recently_added_counts = []
-    for user in active_users:
-        recently_added_count = recent_contacts_list.filter(
-                                        added_by=user).count()
-        recently_added_counts.append({
-            'user': user,
-            'count': recently_added_count
-        })
+    # active_users = [recent_contacts_list[0].added_by]
+    # for i in range(1, len(recent_contacts_list)):
+    #     if recent_contacts_list[i].added_by != recent_contacts_list[i-1].added_by:
+    #         active_users.append(recent_contacts_list[i].added_by)
+    #
+    # recently_added_counts = []
+    # for user in active_users:
+    #     recently_added_count = recent_contacts_list.filter(
+    #                                     added_by=user).count()
+    #     recently_added_counts.append({
+    #         'user': user,
+    #         'count': recently_added_count
+    #     })
 
     total_contacts = Contact.objects.all().count()
+    black_population = 89311
+    percent_lf_added = format((total_contacts / 89311 * 100), '.3f')
 
     context = {
         'userprofile' : userprofile,
-        'recently_added_counts' : recently_added_counts,
-        'now' : now,
-        'tdelta' : tdelta,
-        'total_contacts' : total_contacts
+        'total_contacts' : total_contacts,
+        'black_population' : black_population,
+        'percent_lf_added' : percent_lf_added,
+        'recently_added': recently_added
     }
     return render(request, 'contacts/index.html', context)
 
-@login_required #only laborers can see 
+def my_contacts(request, username):
+    #make grid sortable
+    if request.user.username != username:
+        return redirect('index')
+    contacts = Contact.objects.filter(
+        added_by=request.user
+    ).order_by('-created_at')
+    count = contacts.count()
+    context = {
+        'contacts' : contacts,
+        'count': count,
+        'user' : request.user
+    }
+    return render(request, 'contacts/my_contacts.html', context)
+
+
+#def recent_activity(request): #only for laborers
+
+@login_required #only laborers can see
 def history(request):
     contacts = Contact.objects.order_by('-updated_at')[:100]
     context = {

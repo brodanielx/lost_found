@@ -1,9 +1,9 @@
 {% extends 'contacts/base_bootstrap.html' %}
 
 {% load staticfiles %}
-
+{% load humanize %}
 {% block body_block %}
-<h1>Lost Founds</h1>
+<!-- <h1>Lost Founds</h1>
   <p>As Salaam Alaikum {{userprofile.gender}} {{userprofile.user.first_name}}</p>
   <h3>Lost Founds Added: {{total_contacts}}</h3>
   <h2>Recent Activity</h2>
@@ -17,5 +17,54 @@
     {% endfor %}
   {% else %}
     <p>No contacts have been added since {{ tdelta }}.</p>
-  {% endif %}
+  {% endif %} -->
+
+  <div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4 jumbo-h1">Tampa Lost Founds</h1>
+    <div class="row">
+      <div class="col-sm-4">
+        <p class="lead">Total Lost Founds Added: {{ total_contacts }}</p>
+      </div>
+      <div class="col-sm-4">
+        <p class="lead">Lost Founds in Tampa: {{ black_population|intcomma }}</p>
+      </div>
+      <div class="col-sm-4">
+        <p class="lead">Percent in Database: {{ percent_lf_added }} %</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <h4 class="lead">Recently Added by {{ user.first_name }} {{ user.last_name }}</h4>
+  <table class="table table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Gender</th>
+      <th>Name</th>
+      <th>Phone #</th>
+      <th>Email</th>
+      <th>Date Added</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in recently_added %}
+      <tr>
+        <th scope="row">{{ c.pk }}</th>
+        <td>{{ c.gender }}</td>
+        <td>
+          <a href="{% url 'contacts:show_contact' c.pk %}">{{ c.full_name }}</a>
+        </td>
+        <td>{{ c.phone_number }}</td>
+        <td>{{ c.email }}</td>
+        <td>{{ c.created_at|date:"n/j/y g:i A" }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
 {% endblock %}

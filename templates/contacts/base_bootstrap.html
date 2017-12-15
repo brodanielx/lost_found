@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load humanize %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -19,6 +20,7 @@
 
     <!-- Custom styles for this template -->
     <link href="http://v4-alpha.getbootstrap.com/examples/starter-template/starter-template.css" rel="stylesheet">
+    <link href="{% static "css/lf.css" %}" rel="stylesheet">
   </head>
 
   <body>
@@ -36,6 +38,9 @@
             <a class="nav-link" href="{% url 'contacts:index' %}">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="{% url 'contacts:my_contacts' user.username %}">My Contacts</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'contacts:my_profile' user.username %}">My Profile</a>
           </li>
           <li class="nav-item">
@@ -51,9 +56,9 @@
             <a class="nav-link" href="{% url 'auth_logout' %}?next=/contacts/">Logout</a>
           </li>
           {% else %}
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="{% url 'auth_login' %}">Login</a>
-          </li>
+          </li> -->
           {% endif %}
           <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
@@ -64,10 +69,12 @@
             </div>
           </li> -->
         </ul>
+        {% if user.is_authenticated %}
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="text" placeholder="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
+        {% endif %}
       </div>
     </nav>
 

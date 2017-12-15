@@ -1,0 +1,41 @@
+{% extends 'contacts/base_bootstrap.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% block body_block %}
+
+  <div class="jumbotron jumbotron-fluid slim-jumbo">
+  <div class="container">
+    <p class="lead">Lost Founds added by {{ user.first_name }} {{ user.last_name }}: {{ count }}</p>
+  </div>
+</div>
+<div class="container">
+  <table class="table table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Gender</th>
+      <th>Name</th>
+      <th>Phone #</th>
+      <th>Email</th>
+      <th>Date Added</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in contacts %}
+      <tr>
+        <th scope="row">{{ c.pk }}</th>
+        <td>{{ c.gender }}</td>
+        <td>
+          <a href="{% url 'contacts:show_contact' c.pk %}">{{ c.full_name }}</a>
+        </td>
+        <td>{{ c.phone_number }}</td>
+        <td>{{ c.email }}</td>
+        <td>{{ c.created_at|date:"n/j/y g:i A" }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% endblock %}
