@@ -6,7 +6,11 @@
 
   <div class="jumbotron jumbotron-fluid slim-jumbo">
   <div class="container">
-    <p class="lead">Lost Founds added by {{ user.first_name }} {{ user.last_name }}: {{ count }}</p>
+    {% if count > 0 %}
+      <p class="lead">Lost Founds added by {{ user.first_name }} {{ user.last_name }}: {{ count }}</p>
+    {% else %}
+      <p class="lead">You have not added any Lost Founds</p>
+    {% endif %}
   </div>
 </div>
 <div class="container">

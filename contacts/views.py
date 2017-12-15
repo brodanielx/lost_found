@@ -114,4 +114,26 @@ def add_contact(request):
     context = {'form' : form}
     return render(request, 'contacts/add_contact.html', context)
 
+def edit_contact(request, pk):
+    contact = get_object_or_404(Contact, pk=pk)
+    if contact.added_by != request.user:
+        return redirect('index')
+    form = ContactForm(instance=contact)
+    if request.method == 'POST':
+        form = ContactForm(request.POST, instance=contact)
+        if form.is_valid():
+            if request.user:
+                contact = form.save(commit=False)
+                contact.added_by = request.user
+                contact.save()
+                return HttpResponseRedirect(reverse('contacts:show_contact', args=(contact.pk,)))
+        else:
+            print(form.errors)
+    context = {
+        'form' : form,
+        'contact' : contact
+    }
+    return render(request, 'contacts/edit_contact.html', context)
+
+
 # def stats(request):
