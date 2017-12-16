@@ -1,8 +1,13 @@
 from django import forms
+from crispy_forms.helper import FormHelper
 from django.contrib.auth.models import User
 from contacts.models import Contact
 
 class ContactForm(forms.ModelForm):
+
+    helper = FormHelper()
+    helper.form_show_labels = False
+
     GENDER_CHOICES = (
         ('Bro', 'Brother'),
         ('Sis', 'Sister'),

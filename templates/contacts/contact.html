@@ -8,9 +8,11 @@
 
 {% block body_block %}
   {% if contact %}
-    <h1>{{ contact.gender }} {{ contact.full_name }}
-      <a href="{% url 'contacts:edit_contact' contact.pk %}">
-        <i class="fa fa-pencil fa-sm white"></i>
+    <h1>{{ contact.gender }} {{ contact.full_name }}&nbsp;
+      <a class="btn btn-primary"
+        href="{% url 'contacts:edit_contact' contact.pk %}"
+        role="button">
+        Edit
       </a>
     </h1>
     <div class="col-sm-6">
