@@ -95,6 +95,8 @@ def my_profile(request, username):
 @login_required
 def show_contact(request, pk):
     contact = get_object_or_404(Contact, pk=pk)
+    if request.user != contact.added_by:
+        return redirect('index')
     context = {'contact' : contact}
     return render(request, 'contacts/contact.html', context)
 

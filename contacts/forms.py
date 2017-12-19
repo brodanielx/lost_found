@@ -9,8 +9,8 @@ class ContactForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_method = 'POST'
     helper.form_class = 'form-horizontal'
-    helper.label_class = 'col-lg-4'
-    helper.field_class = 'col-lg-8'
+    helper.label_class = 'col-lg-3 text-right pt5'
+    helper.field_class = 'col-lg-6'
     helper.add_input(Submit('Update Contact', 'Update Contact', css_class='btn-primary'))
 
     GENDER_CHOICES = (
