@@ -78,6 +78,11 @@ class ContactForm(forms.ModelForm):
         required=False
         )
 
+    phone_number_formated = forms.CharField(
+        widget=forms.HiddenInput(),
+        required=False
+        )
+
     class Meta:
         model = Contact
         exclude = ('added_by', 'created_at', 'updated_at')
