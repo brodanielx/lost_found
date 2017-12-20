@@ -34,7 +34,7 @@ class ContactForm(forms.ModelForm):
 
     phone_number = forms.CharField(
         max_length=11,
-        label='Phone Number: '
+        label='Phone Number: ',
         )
 
     email = forms.EmailField(
@@ -81,3 +81,27 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
         exclude = ('added_by', 'created_at', 'updated_at')
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data['phone_number']
+        try:
+            is_numbers_only(phone_number)
+        except:
+            raise forms.ValidationError('Invalid Phone Number: Numbers Only')
+        if not (len(phone_number) == 10 or (len(phone_number) == 11 and phone_number[0] == '1')):
+            raise forms.ValidationError('Invalid Phone Number')
+        return phone_number
+
+    def clean_zip_code(self):
+        zip_code = self.cleaned_data['zip_code']
+        try:
+            is_numbers_only(zip_code)
+        except:
+            raise forms.ValidationError('Invalid Zip Code: Numbers Only')
+        if len(zip_code) > 0 and not len(zip_code) == 5:
+            raise forms.ValidationError('Invalid Zip Code: 5 Digits')
+        return zip_code
+
+def is_numbers_only(num_string):
+    for char in list(num_string):
+        int(char)

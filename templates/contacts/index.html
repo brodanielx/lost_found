@@ -63,10 +63,9 @@
         <td>{{ c.email }}</td>
         <td>{{ c.created_at|date:"n/j/y g:i A" }}</td>
         <td>
-          <a class="btn btn-primary"
-            href="{% url 'contacts:edit_contact' c.pk %}"
-            role="button">
-            Edit
+          <a class=""
+            href="{% url 'contacts:edit_contact' c.pk %}">
+            <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
           </a>
         </td>
       </tr>
