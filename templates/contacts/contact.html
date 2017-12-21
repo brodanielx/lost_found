@@ -21,7 +21,7 @@
           <p>Phone Number:</p>
         </div>
         <div class="col-sm-8">
-          <p>{{ contact.phone_number }}</p>
+          <p>{{ contact.phone_number_formated }}</p>
         </div>
       </div>
       <div class="row">
@@ -53,7 +53,7 @@
           <p>Added By:</p>
         </div>
         <div class="col-sm-8">
-          <p>{{ contact.added_by }}</p>
+          <p>{{ contact.added_by.first_name }} {{ contact.added_by.last_name }}</p>
         </div>
       </div>
       <div class="row">

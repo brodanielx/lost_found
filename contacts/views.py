@@ -25,20 +25,6 @@ def index(request):
                         added_by=request.user
                         ).order_by('-created_at')[:5]
 
-    # active_users = [recent_contacts_list[0].added_by]
-    # for i in range(1, len(recent_contacts_list)):
-    #     if recent_contacts_list[i].added_by != recent_contacts_list[i-1].added_by:
-    #         active_users.append(recent_contacts_list[i].added_by)
-    #
-    # recently_added_counts = []
-    # for user in active_users:
-    #     recently_added_count = recent_contacts_list.filter(
-    #                                     added_by=user).count()
-    #     recently_added_counts.append({
-    #         'user': user,
-    #         'count': recently_added_count
-    #     })
-
     total_contacts = Contact.objects.all().count()
     black_population = 89311
     percent_lf_added = format((total_contacts / 89311 * 100), '.3f')
@@ -77,20 +63,6 @@ def history(request):
         'contacts' : contacts
     }
     return render(request, 'contacts/history.html', context)
-
-
-@login_required
-def my_profile(request, username):
-    if request.user.username != username:
-        return redirect('index')
-    contact_list = Contact.objects.filter(
-        added_by=request.user
-    ).order_by('-created_at')[:5]
-    context = {
-        'contacts' : contact_list,
-        'user' : request.user
-    }
-    return render(request, 'contacts/my_profile.html', context)
 
 @login_required
 def show_contact(request, pk):

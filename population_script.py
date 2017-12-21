@@ -33,7 +33,7 @@ def populate():
 
     for c in Contact.objects.all():
         print('- {0} - {1} - {2} - {3} - {4}'.format(
-                c.gender, c.full_name, c.phone_number, c.email, c.added_by
+                c.gender, c.full_name, c.phone_number_formated, c.email, c.added_by
             ))
 
 def add_contact(first_name, last_name, phone_number, email, gender, state, user):

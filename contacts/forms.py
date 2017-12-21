@@ -35,6 +35,7 @@ class ContactForm(forms.ModelForm):
     phone_number = forms.CharField(
         max_length=11,
         label='Phone Number: ',
+        help_text='Numbers Only'
         )
 
     email = forms.EmailField(

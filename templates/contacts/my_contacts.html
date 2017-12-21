@@ -33,9 +33,9 @@
         <td>
           <a href="{% url 'contacts:show_contact' c.pk %}">{{ c.full_name }}</a>
         </td>
-        <td>{{ c.phone_number }}</td>
+        <td>{{ c.phone_number_formated }}</td>
         <td>{{ c.email }}</td>
-        <td>{{ c.created_at|date:"n/j/y g:i A" }}</td>
+        <td>{{ c.created_at|date:"n/j/y" }}</td>
       </tr>
     {% endfor %}
   </tbody>
