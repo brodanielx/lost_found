@@ -1,0 +1,63 @@
+{% extends 'contacts/base_bootstrap.html' %}
+{% load staticfiles %}
+
+{% block title %} Search {% endblock %}
+
+{% block body_block %}
+<div>
+  <h1 class="pb20">Search Lost Founds</h1>
+  <form class="form-inline"
+        action="{% url 'contacts:search' %}"
+        method="post">
+    {% csrf_token %}
+    <div class="form-group pb40">
+      <input type="text"
+             name="query"
+             value="{{query}}"
+             id="query"
+             size="50"
+             class="ml15 form-control">
+     <span class="input-group-btn">
+       <button class="btn btn-secondary" type="submit" name="submit"
+               value="Search">Search</button>
+     </span>
+    </div>
+  </form>
+  <div class="">
+    {% if result_list %}
+    <small class="text-muted pb20">{{ result_count }} result{% if result_count > 1 %}s{% endif %}</small>
+    <div class="list-group">
+      {% for result in result_list %}
+      <a href="{% url 'contacts:show_contact' result.pk %}" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">
+            <!-- <a href="{% url 'contacts:show_contact' result.pk %}"> -->
+              {{ result.gender }} {{ result.full_name }}
+            <!-- </a> -->
+          </h5>
+          <small>{{ result.created_at|date:"n/j/y" }}</small>
+        </div>
+        <p class="mb-1">
+          {{ result.phone_number_formated }}
+          {% if result.email %}
+            | {{ result.email }}
+          {% endif %}
+          {% if result.street_address %}
+            | {{ result.street_address }}
+          {% endif %}
+          {% if result.city and result.state %}
+            | {{ result.city }}, {{ result.state }}
+          {% endif %}
+          {% if result.zip_code %}
+            | {{ result.zip_code }}
+          {% endif %}
+        </p>
+      </a>
+      {% endfor %}
+    </div>
+    {% elif query and not result_list %}
+      <p>0 results found.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

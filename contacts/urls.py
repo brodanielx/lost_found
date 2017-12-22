@@ -12,5 +12,6 @@ urlpatterns = [
         views.show_contact, name='show_contact'),
     url(r'^editcontact/(?P<pk>[\w\-]+)/$',
         views.edit_contact, name='edit_contact'),
+    url(r'^search/$', views.search, name='search'),
     url(r'^history/$', views.history, name='history'),
 ]

@@ -109,5 +109,27 @@ def edit_contact(request, pk):
     }
     return render(request, 'contacts/edit_contact.html', context)
 
+def search(request):
+    result_list = []
+    result_count = 0
+    query = ''
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+        print(query)
+        if query:
+            contacts_full_name = Contact.objects.filter(
+                added_by=request.user
+            ).filter(
+                full_name__icontains=query
+            ).order_by('-created_at')
+            result_list = contacts_full_name
+            result_count = result_list.count()
+    context = {
+        'result_list' : result_list,
+        'result_count' : result_count,
+        'query' : query
+    }
+    return render(request, 'contacts/search.html', context)
+
 
 # def stats(request):

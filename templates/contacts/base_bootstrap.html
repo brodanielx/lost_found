@@ -46,9 +46,6 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'contacts:add_contact' %}">Add Contact</a>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="{% url 'contacts:history' %}">History</a>
-          </li> -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -57,17 +54,20 @@
             </div>
           </li>
           <!-- <li class="nav-item">
-            <a class="nav-link" href="{% url 'auth_password_change' %}">Change Password</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'auth_logout' %}?next=/contacts/">Logout</a>
+            <a class="nav-link" href="{% url 'contacts:search' %}">Search</a>
           </li> -->
           {% else %}
           {% endif %}
         </ul>
         {% if user.is_authenticated %}
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search">
+        <form class="form-inline my-2 my-lg-0"
+              action="{% url 'contacts:search' %}"
+              method="post">
+          {% csrf_token %}
+          <input class="form-control mr-sm-2"
+                 type="text"
+                 placeholder="Search"
+                 name="query">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         {% endif %}
