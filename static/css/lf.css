@@ -1,9 +1,13 @@
+h1, h2 {
+  font-weight: 300;
+}
+
 .jumbotron {
   padding: 4rem 2rem 2rem;
 }
 
 .slim-jumbo {
-  padding: 2rem 2rem;
+  padding: 1rem 1rem;
 }
 
 .jumbo-h1 {
@@ -14,6 +18,22 @@
   margin-top: 20px
 }
 
+.nmb {
+  margin-bottom: 0px;
+}
+
 .pt5 {
   padding-top: 5px
+}
+
+.pl15 {
+  padding-left: 15px
+}
+
+.pb20 {
+  padding-bottom: 20px
+}
+
+.errorlist {
+  color: #cc0000
 }

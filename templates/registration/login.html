@@ -1,35 +1,36 @@
 {% extends "contacts/base_bootstrap.html" %}
+{% load staticfiles %}
 {% block title_block %}
   Login
 {% endblock %}
 {% block body_block %}
-  <!-- <h1>Login</h1>
-  <form method="post" action=".">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Log in" />
-  <input type="hidden" name="next" value="{{ next }}" />
-  </form> -->
 
   <div class="container">
 
-      <form class="form-signin" method="post" action=".">
-        <h2 class="form-signin-heading">Sign in</h2>
+      <form method="post" action="." class="form-signin">
+        <h2 class="form-signin-heading text-center">LF Database</h2>
         {% csrf_token %}
-        {{ form.as_p }}
-        <!-- <label for="inputEmail" class="sr-only">Username</label>
-        <input type="text" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required> -->
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
+        <div class="row">
+          {{form.non_field_errors}}
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <input type="submit" value="Log in" />
-        <input type="hidden" name="next" value="{{ next }}"
+        {% for field in form %}
+        <div class="row">
+            {{ field.errors }}
+        </div>
+        <div class="fieldWrapper form-group row">
+            {{ field.label_tag }}
+                {{ field }}
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <div class="row">
+          <input type="submit" value="LOGIN" class="btn btn-primary btn-primary btn-block" />
+          <input type="hidden" name="next" value="{{ next }}" />
+        </div>
       </form>
 
     </div>
+    <script src="{% static "js/reg_redux.js" %}"></script>
 {% endblock %}
