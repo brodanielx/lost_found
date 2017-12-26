@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'contacts',
     'registration',
     'django.contrib.humanize',
-    'crispy_forms'
+    'crispy_forms',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

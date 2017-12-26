@@ -2,6 +2,41 @@
 
 {% load staticfiles %}
 {% load humanize %}
+
+<script type="text/javascript">
+{% block js %}
+
+  let getContacts = (sortkey) => {
+    let endpoint = `api/recently_added/${sortkey}/`
+    $.ajax({
+      method: 'GET',
+      url: endpoint,
+      success: (data) => {
+        sortGrid(data);
+      },
+      error: (error_data) => {
+        console.log('error: ', error_data);
+      }
+    })
+  }
+
+  getContacts('created_at')
+
+  let gridHeaders = document.querySelectorAll('.grid-header')
+  gridHeaders.forEach(header => {
+    header.addEventListener('click', () => {
+      getContacts(header.id)
+    })
+  })
+
+  let sortGrid = (data) => {
+    console.log('sortGrid: ', data);
+  }
+
+{% endblock %}
+</script>
+
+
 {% block body_block %}
 
   <div class="jumbotron jumbotron-fluid">
@@ -28,11 +63,21 @@
   <thead>
     <tr>
       <th>#</th>
-      <th>Gender</th>
-      <th>Name</th>
-      <th>Phone #</th>
-      <th>Email</th>
-      <th>Date Added</th>
+      <th class="grid-header" id="gender">
+        Gender
+      </th>
+      <th class="grid-header" id="full_name">
+        Name
+      </th>
+      <th class="grid-header" id="phone_number_formated">
+        Phone #
+      </th>
+      <th class="grid-header" id="email">
+        Email
+      </th>
+      <th class="grid-header" id="created_at">
+        Date Added
+      </th>
       <th>Edit</th>
     </tr>
   </thead>

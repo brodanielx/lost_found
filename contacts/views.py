@@ -1,7 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from django.core import serializers
 from django.urls import reverse
 from django.contrib.auth.models import User
 from contacts.models import Contact, UserProfile
@@ -9,6 +13,7 @@ from contacts.forms import ContactForm
 import datetime
 import pytz
 import logging
+import json
 
 # logging.basicConfig(filename='test.log', level=logging.DEBUG,
 #     format='%(asctime)s:%(levelname)s:%(message)s')
@@ -37,6 +42,18 @@ def index(request):
         'recently_added': recently_added
     }
     return render(request, 'contacts/index.html', context)
+
+@api_view()
+def recently_added(request, sortkey):
+    now = datetime.datetime.now(pytz.utc)
+    tdelta = now - datetime.timedelta(days=14)
+    recently_added = Contact.objects.filter(
+                        created_at__gte=tdelta
+                        ).filter(
+                        added_by=request.user
+                        ).order_by('{}'.format(sortkey))[:5]
+    data = json.loads(serializers.serialize('json', recently_added))
+    return Response(data)
 
 def my_contacts(request, username):
     #make grid sortable
