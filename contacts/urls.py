@@ -5,7 +5,7 @@ app_name = 'contacts'
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^api/recently_added/(?P<sortkey>[\w\-]+)/$', views.recently_added),
+    url(r'^api/user/data/$', views.user_activity),
     url(r'^mycontacts/(?P<username>[\w\-]+)/$',
         views.my_contacts, name='my_contacts'),
     url(r'^addcontact/$', views.add_contact, name='add_contact'),

@@ -14,6 +14,7 @@ from django_tables2 import RequestConfig
 from django_tables2.export.export import TableExport
 from .tables import ContactTable
 import datetime
+import itertools
 import pytz
 import logging
 import json
@@ -57,15 +58,46 @@ def index(request):
     return render(request, 'contacts/index.html', context)
 
 @api_view()
-def recently_added(request, sortkey):
-    now = datetime.datetime.now(pytz.utc)
-    tdelta = now - datetime.timedelta(days=14)
-    recently_added = Contact.objects.filter(
-                        created_at__gte=tdelta
-                        ).filter(
+def user_activity(request):
+    tdelta = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=90)
+    contacts = Contact.objects.filter(
                         added_by=request.user
-                        ).order_by('{}'.format(sortkey))[:5]
-    data = json.loads(serializers.serialize('json', recently_added))
+                        )
+    contacts_last_90_days = contacts.filter(
+                            created_at__gte=tdelta
+                            )
+
+    grouped_by_week = itertools.groupby(
+            contacts_last_90_days, lambda record: record.created_at.strftime("%W/%y")
+            )
+    contacts_by_week = [
+        (day, len(list(contacts_this_week))) for day, contacts_this_week in grouped_by_week
+        ]
+    count_by_week = []
+    for week, count in contacts_by_week:
+        count_by_week.append({
+            'week': week,
+            'count': count
+        })
+
+    grouped_by_month = itertools.groupby(
+            contacts, lambda record: record.created_at.strftime("%m/%y")
+            )
+    contacts_by_month = [
+        (day, len(list(contacts_this_month))) for day, contacts_this_month in grouped_by_month
+        ]
+    count_by_month = []
+    for month, count in contacts_by_month:
+        count_by_month.append({
+            'month': month,
+            'count': count
+        })
+
+    data = {
+        'by_week': count_by_week,
+        'by_month': count_by_month
+    }
+
     return Response(data)
 
 def my_contacts(request, username):
