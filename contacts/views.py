@@ -11,7 +11,8 @@ from django.contrib.auth.models import User
 from contacts.models import Contact, UserProfile
 from contacts.forms import ContactForm
 from django_tables2 import RequestConfig
-from .tables import ContactByUserTable
+from django_tables2.export.export import TableExport
+from .tables import ContactTable
 import datetime
 import pytz
 import logging
@@ -36,8 +37,12 @@ def index(request):
     black_population = 89311
     percent_lf_added = format((total_contacts / 89311 * 100), '.3f')
 
-    table = ContactByUserTable(recently_added)
-    RequestConfig(request).configure(table)
+    table = ContactTable(recently_added)
+    RequestConfig(request, paginate={'per_page': 25}).configure(table)
+    export_format = request.GET.get('_export', None)
+    if TableExport.is_valid_format(export_format):
+        exporter = TableExport(export_format, table)
+        return exporter.response('table.{}'.format(export_format))
 
     context = {
         'userprofile' : userprofile,
@@ -62,17 +67,23 @@ def recently_added(request, sortkey):
     return Response(data)
 
 def my_contacts(request, username):
-    #make grid sortable
     if request.user.username != username:
         return redirect('index')
     contacts = Contact.objects.filter(
         added_by=request.user
     ).order_by('-created_at')
     count = contacts.count()
+    table = ContactTable(contacts)
+    RequestConfig(request, paginate={'per_page': 25}).configure(table)
+    export_format = request.GET.get('_export', None)
+    if TableExport.is_valid_format(export_format):
+        exporter = TableExport(export_format, table)
+        return exporter.response('contacts.{}'.format(export_format))
     context = {
         'contacts' : contacts,
         'count': count,
-        'user' : request.user
+        'user' : request.user,
+        'table': table
     }
     return render(request, 'contacts/my_contacts.html', context)
 

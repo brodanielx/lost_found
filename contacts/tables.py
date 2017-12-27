@@ -1,9 +1,9 @@
 import django_tables2 as tables
 from .models import Contact
 
-class ContactByUserTable(tables.Table):
+class ContactTable(tables.Table):
     full_name = tables.TemplateColumn('<a href="/contacts/contact/{{record.id}}">{{record.full_name}}</a>')
-    edit = tables.TemplateColumn('<a href="/contacts/editcontact/{{record.id}}"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>', orderable=False)
+    edit = tables.TemplateColumn('<a href="/contacts/editcontact/{{record.id}}"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>', orderable=False, exclude_from_export=True)
     created_at = tables.DateColumn(format='n/j/y')
     class Meta:
         model = Contact
