@@ -37,12 +37,14 @@ def index(request):
     black_population = 89311
     percent_lf_added = format((total_contacts / 89311 * 100), '.3f')
 
+    date_string = datetime.datetime.now().strftime('%m%d%y')
+
     table = ContactTable(recently_added)
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
     export_format = request.GET.get('_export', None)
     if TableExport.is_valid_format(export_format):
         exporter = TableExport(export_format, table)
-        return exporter.response('table.{}'.format(export_format))
+        return exporter.response('recent_contacts_{0}.{1}'.format(date_string, export_format))
 
     context = {
         'userprofile' : userprofile,
@@ -73,12 +75,16 @@ def my_contacts(request, username):
         added_by=request.user
     ).order_by('-created_at')
     count = contacts.count()
+
+    date_string = datetime.datetime.now().strftime('%m%d%y')
+
     table = ContactTable(contacts)
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
     export_format = request.GET.get('_export', None)
     if TableExport.is_valid_format(export_format):
         exporter = TableExport(export_format, table)
-        return exporter.response('contacts.{}'.format(export_format))
+        return exporter.response('contacts_{0}.{1}'.format(date_string, export_format))
+
     context = {
         'contacts' : contacts,
         'count': count,
