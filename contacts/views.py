@@ -10,6 +10,8 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from contacts.models import Contact, UserProfile
 from contacts.forms import ContactForm
+from django_tables2 import RequestConfig
+from .tables import ContactByUserTable
 import datetime
 import pytz
 import logging
@@ -28,18 +30,22 @@ def index(request):
                         created_at__gte=tdelta
                         ).filter(
                         added_by=request.user
-                        ).order_by('-created_at')[:5]
+                        ).order_by('-created_at')
 
     total_contacts = Contact.objects.all().count()
     black_population = 89311
     percent_lf_added = format((total_contacts / 89311 * 100), '.3f')
+
+    table = ContactByUserTable(recently_added)
+    RequestConfig(request).configure(table)
 
     context = {
         'userprofile' : userprofile,
         'total_contacts' : total_contacts,
         'black_population' : black_population,
         'percent_lf_added' : percent_lf_added,
-        'recently_added': recently_added
+        'recently_added': recently_added,
+        'table': table
     }
     return render(request, 'contacts/index.html', context)
 

@@ -45,3 +45,7 @@ h1, h2, h3 {
 .errorlist {
   color: #cc0000
 }
+
+.desc, .asc {
+  text-decoration: underline;
+}

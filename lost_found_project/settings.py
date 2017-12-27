@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'crispy_forms',
     'rest_framework',
-    'djng'
+    'django_tables2'
 ]
 
 MIDDLEWARE = [
