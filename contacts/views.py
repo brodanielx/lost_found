@@ -241,13 +241,6 @@ def user_activity(request):
 #*********************************************************************************
 
     data = {
-        'by_week': count_by_week_data,
-        'by_month': count_by_month,
-        'labels_week_of': labels_week_of,
-        'labels_months': labels_months
-    }
-
-    data = {
         'by_week': {
             'labels': labels_week_of,
             'values': count_by_week_data
