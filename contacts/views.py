@@ -13,6 +13,7 @@ from contacts.forms import ContactForm
 from django_tables2 import RequestConfig
 from django_tables2.export.export import TableExport
 from .tables import ContactTable
+from dateutil.relativedelta import relativedelta
 import datetime
 import itertools
 import pytz
@@ -56,68 +57,6 @@ def index(request):
         'table': table
     }
     return render(request, 'contacts/index.html', context)
-
-@api_view()
-def user_activity(request):
-    now = datetime.datetime.now(pytz.utc)
-    tdelta = now - datetime.timedelta(weeks=12)
-    contacts = Contact.objects.filter(
-                        added_by=request.user
-                        )
-    contacts_last_12_weeks = contacts.filter(
-                            created_at__gte=tdelta
-                            )
-
-    grouped_by_week = itertools.groupby(
-            contacts_last_12_weeks, lambda record: record.created_at.strftime("%W/%y")
-            )
-    contacts_by_week = [
-        (week, len(list(contacts_this_week))) for week, contacts_this_week in grouped_by_week
-        ]
-
-    #get week strings for the last 12 weeks
-    labels_weeks = []
-    for i in range(12,-1,-1):
-        labels_weeks.append(
-            (now - datetime.timedelta(weeks=i)).strftime("%W/%y")
-        )
-
-    labels_week_of = []
-    count_by_week = []
-    for label in labels_weeks:
-        week_of_string = (
-                datetime.datetime.strptime(label + '-1', "%W/%y-%w")
-            ).strftime("%m/%d/%y")
-        try:
-            count = [count for week, count in contacts_by_week if week == label][0]
-        except IndexError:
-            count = 0
-        count_by_week.append({
-            'week': week_of_string,
-            'count': count
-        })
-        labels_week_of.append(week_of_string)
-
-    grouped_by_month = itertools.groupby(
-            contacts, lambda record: record.created_at.strftime("%m/%y")
-            )
-    contacts_by_month = [
-        (day, len(list(contacts_this_month))) for day, contacts_this_month in grouped_by_month
-        ]
-    count_by_month = []
-    for month, count in contacts_by_month:
-        count_by_month.append({
-            'month': month,
-            'count': count
-        })
-
-    data = {
-        'by_week': count_by_week,
-        'by_month': count_by_month,
-        'labels_week_of': labels_week_of
-    }
-
-    return Response(data)
 
 def my_contacts(request, username):
     if request.user.username != username:
@@ -223,4 +162,100 @@ def search(request):
     return render(request, 'contacts/search.html', context)
 
 
-# def stats(request):
+@api_view()
+def user_activity(request):
+    now = datetime.datetime.now(pytz.utc)
+    tdelta = now - datetime.timedelta(weeks=12)
+    contacts = Contact.objects.filter(
+                        added_by=request.user
+                        )
+    contacts_last_12_weeks = contacts.filter(
+                            created_at__gte=tdelta
+                            )
+
+#***********************BY WEEK*******************************************************
+
+    grouped_by_week = itertools.groupby(
+            contacts_last_12_weeks, lambda record: record.created_at.strftime("%W/%y")
+            )
+    contacts_by_week = [
+        (week, len(list(contacts_this_week))) for week, contacts_this_week in grouped_by_week
+        ]
+
+    #get week strings for the last 12 weeks
+    labels_weeks = []
+    for i in range(12,-1,-1):
+        labels_weeks.append(
+            (now - datetime.timedelta(weeks=i)).strftime("%W/%y")
+        )
+
+    labels_week_of = []
+    count_by_week = []
+    for label in labels_weeks:
+        week_of_string = (
+                datetime.datetime.strptime(label + '-1', "%W/%y-%w")
+            ).strftime("%m/%d/%y")
+        try:
+            count = [count for week, count in contacts_by_week if week == label][0]
+        except IndexError:
+            count = 0
+        count_by_week.append({
+            'week': week_of_string,
+            'count': count
+        })
+        labels_week_of.append(week_of_string)
+    count_by_week_data = [x['count'] for x in count_by_week]
+#*********************************************************************************
+
+#***********************BY MONTH*******************************************************
+
+    grouped_by_month = itertools.groupby(
+            contacts, lambda record: record.created_at.strftime("%m/%y")
+            )
+    contacts_by_month = [
+        (month, len(list(contacts_this_month))) for month, contacts_this_month in grouped_by_month
+        ]
+
+    #get month labels
+    first_month_string = '{}-01'.format(contacts_by_month[0][0])
+    first_month_date = datetime.datetime.strptime(first_month_string, "%m/%y-%d")
+    months_between = relativedelta(datetime.datetime.now(), first_month_date).months
+
+    labels_months = []
+    for i in range(months_between+1):
+        labels_months.append(
+            (first_month_date + relativedelta(months=+0)).strftime("%m/%y")
+        )
+
+    count_by_month = []
+    for label in labels_months:
+        try:
+            count = [count for month, count in contacts_by_month if month == label][0]
+        except IndexError:
+            count = 0
+        count_by_month.append({
+                'month': label,
+                'count': count
+            })
+    count_by_month_data = [x['count'] for x in count_by_month]
+#*********************************************************************************
+
+    data = {
+        'by_week': count_by_week_data,
+        'by_month': count_by_month,
+        'labels_week_of': labels_week_of,
+        'labels_months': labels_months
+    }
+
+    data = {
+        'by_week': {
+            'labels': labels_week_of,
+            'values': count_by_week_data
+        },
+        'by_month': {
+            'labels': labels_months,
+            'values': count_by_month_data
+        },
+    }
+
+    return Response(data)

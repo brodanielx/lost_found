@@ -57,3 +57,7 @@ h1, h2, h3 {
 .nav-link {
   font-weight: 300;
 }
+
+#myFixedHeightContainer {
+    height: 40vh;
+}

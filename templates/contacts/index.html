@@ -6,61 +6,62 @@
 
 <script type="text/javascript">
   {% block js %}
-  let userActivity = []
-  let labels = []
+  let userActivity_month = []
+  let labels_month = []
+  let userActivity_week = []
+  let labels_week = []
   let endpoint = 'api/user/data/'
-  let getUserActivity = () => {
-    $.ajax({
-      method: 'GET',
-      url: endpoint,
-      success: (data) => {
-        console.log(data);
-      },
-      error: (error_data) => {
-        console.log('error: ', error_data);
-      }
-    })
+  $.ajax({
+    method: 'GET',
+    url: endpoint,
+    success: (data) => {
+      labels_week = data.by_week.labels
+      userActivity_week = data.by_week.values
+      labels_month = data.by_month.labels
+      userActivity_month = data.by_month.values
+      setByWeekChart()
+    },
+    error: (error_data) => {
+      console.log('error: ', error_data);
+    }
+  })
+
+  setByWeekChart = () => {
+    var ctx = document.getElementById("byWeek").getContext('2d');
+    var byWeek = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels_week,
+            datasets: [{
+                label: '# of Lost Founds Added',
+                data: userActivity_week,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0)',
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                ],
+                // borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            elements: {
+              line: {
+                tension: .3
+              }
+            },
+        }
+    });
   }
-
-  getUserActivity()
-
-  var ctx = document.getElementById("myChart").getContext('2d');
-  var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-          datasets: [{
-              label: '# of Votes',
-              data: userActivity,
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.5)',
-                  'rgba(54, 162, 235, 0.5)',
-                  'rgba(255, 206, 86, 0.5)',
-                  'rgba(75, 192, 192, 0.5)',
-                  'rgba(153, 102, 255, 0.5)',
-                  'rgba(255, 159, 64, 0.5)'
-              ],
-              borderColor: [
-                  'rgba(255,99,132,1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
-  });
 
   {% endblock %}
 </script>
@@ -87,7 +88,10 @@
   <h4 class="lead">
     User Activity
   </h4>
-  <canvas id="myChart" width="400" height="400"></canvas>
+  <div id="myFixedHeightContainer">
+    <canvas id="byWeek"></canvas>
+  </div>
+
 </div>
 
 <div class="container">
