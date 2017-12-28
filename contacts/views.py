@@ -59,26 +59,44 @@ def index(request):
 
 @api_view()
 def user_activity(request):
-    tdelta = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=90)
+    now = datetime.datetime.now(pytz.utc)
+    tdelta = now - datetime.timedelta(weeks=12)
     contacts = Contact.objects.filter(
                         added_by=request.user
                         )
-    contacts_last_90_days = contacts.filter(
+    contacts_last_12_weeks = contacts.filter(
                             created_at__gte=tdelta
                             )
 
     grouped_by_week = itertools.groupby(
-            contacts_last_90_days, lambda record: record.created_at.strftime("%W/%y")
+            contacts_last_12_weeks, lambda record: record.created_at.strftime("%W/%y")
             )
     contacts_by_week = [
-        (day, len(list(contacts_this_week))) for day, contacts_this_week in grouped_by_week
+        (week, len(list(contacts_this_week))) for week, contacts_this_week in grouped_by_week
         ]
+
+    #get week strings for the last 12 weeks
+    labels_weeks = []
+    for i in range(12,-1,-1):
+        labels_weeks.append(
+            (now - datetime.timedelta(weeks=i)).strftime("%W/%y")
+        )
+
+    labels_week_of = []
     count_by_week = []
-    for week, count in contacts_by_week:
+    for label in labels_weeks:
+        week_of_string = (
+                datetime.datetime.strptime(label + '-1', "%W/%y-%w")
+            ).strftime("%m/%d/%y")
+        try:
+            count = [count for week, count in contacts_by_week if week == label][0]
+        except IndexError:
+            count = 0
         count_by_week.append({
-            'week': week,
+            'week': week_of_string,
             'count': count
         })
+        labels_week_of.append(week_of_string)
 
     grouped_by_month = itertools.groupby(
             contacts, lambda record: record.created_at.strftime("%m/%y")
@@ -95,7 +113,8 @@ def user_activity(request):
 
     data = {
         'by_week': count_by_week,
-        'by_month': count_by_month
+        'by_month': count_by_month,
+        'labels_week_of': labels_week_of
     }
 
     return Response(data)
