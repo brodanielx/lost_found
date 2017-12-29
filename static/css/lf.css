@@ -3,7 +3,7 @@ h1, h2, h3 {
 }
 
 .jumbotron {
-  padding: 4rem 2rem 2rem;
+  padding: 2rem;
 }
 
 .slim-jumbo {
@@ -11,7 +11,7 @@ h1, h2, h3 {
 }
 
 .jumbo-h1 {
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
 }
 
 .mt20 {
@@ -60,4 +60,15 @@ h1, h2, h3 {
 
 #myFixedHeightContainer {
     height: 40vh;
+}
+
+.bg-inverse {
+  background-color: #27232C !important
+}
+
+.btn-outline-white {
+    color: #fff;
+    background-image: none;
+    background-color: transparent;
+    border-color: #fff;
 }

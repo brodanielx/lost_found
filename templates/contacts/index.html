@@ -15,16 +15,33 @@
     method: 'GET',
     url: endpoint,
     success: (data) => {
-      labels_week = data.by_week.labels
-      userActivity_week = data.by_week.values
-      labels_month = data.by_month.labels
-      userActivity_month = data.by_month.values
-      setByWeekChart()
+      if (!data.no_activity) {
+        labels_week = data.by_week.labels
+        userActivity_week = data.by_week.values
+        max_by_week = userActivity_week.reduce((a, b) => {
+          return Math.max(a, b)
+        })
+        labels_month = data.by_month.labels
+        userActivity_month = data.by_month.values
+        max_by_month = userActivity_month.reduce((a, b) => {
+          return Math.max(a, b)
+        })
+        setByWeekChart()
+        setByMonthChart()
+      }
     },
     error: (error_data) => {
       console.log('error: ', error_data);
     }
   })
+
+  let chart_label = '# of Lost Founds Added'
+  let backgroundColor = [
+    'rgba(255, 99, 132, 0)',
+  ]
+  let borderColor = [
+    'rgba(255,0,29,.8)',
+  ]
 
   setByWeekChart = () => {
     var ctx = document.getElementById("byWeek").getContext('2d');
@@ -33,22 +50,19 @@
         data: {
             labels: labels_week,
             datasets: [{
-                label: '# of Lost Founds Added',
+                label: chart_label,
                 data: userActivity_week,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0)',
-                ],
-                borderColor: [
-                    'rgba(255,99,132,1)',
-                ],
-                // borderWidth: 1
+                backgroundColor: backgroundColor,
+                borderColor: borderColor,
             }]
         },
         options: {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero:true
+                        beginAtZero:true,
+                        stepSize: 1,
+                        max: max_by_week + 1
                     }
                 }]
             },
@@ -56,7 +70,41 @@
             maintainAspectRatio: false,
             elements: {
               line: {
-                tension: .3
+                tension: .1
+              }
+            },
+        }
+    });
+  }
+
+  setByMonthChart = () => {
+    var ctx = document.getElementById("byMonth").getContext('2d');
+    var byMonth = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels_month,
+            datasets: [{
+              label: chart_label,
+              data: userActivity_month,
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true,
+                        stepSize: 1,
+                        max: max_by_month + 1
+                    }
+                }]
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            elements: {
+              line: {
+                tension: .1
               }
             },
         }
@@ -73,38 +121,57 @@
     <h1 class="display-4 jumbo-h1">Tampa Lost Founds</h1>
     <div class="row">
       <div class="col-sm-4">
-        <p class="lead">Total Lost Founds Added: {{ total_contacts }}</p>
+        <p class="lead">Lost Founds in Database: {{ total_contacts }}</p>
       </div>
       <div class="col-sm-4">
         <p class="lead">Lost Founds in Tampa: {{ black_population|intcomma }}</p>
       </div>
       <div class="col-sm-4">
-        <p class="lead">Percent in Database: {{ percent_lf_added }} %</p>
+        <p class="lead">% in Database: {{ percent_lf_added }} %</p>
       </div>
     </div>
   </div>
 </div>
 <div class="container">
   <h4 class="lead">
-    User Activity
+    Lost Founds Added by {{ user.first_name }} {{ user.last_name }}: {{ contacts_by_user_count }}
   </h4>
-  <div id="myFixedHeightContainer">
-    <canvas id="byWeek"></canvas>
-  </div>
+  {% if contacts_by_user_count > 0 %}
+  <div class="container p-t-md">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#last12Weeks">Last 12 Weeks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#allTime"> All Time </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="last12Weeks">
+                    <ul class="list-group media-list media-list-stream">
+                      <div id="myFixedHeightContainer">
+                        <canvas id="byWeek"></canvas>
+                      </div>
+                    </ul>
+                </div>
+                <div role="tabpanel" class="tab-pane fade in" id="allTime">
+                    <ul class="list-group media-list media-list-stream">
+                      <div id="myFixedHeightContainer">
+                        <canvas id="byMonth"></canvas>
+                      </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
+    </div>
 </div>
-
-<div class="container">
-  <h4 class="lead">
-    Recently Added by {{ user.first_name }} {{ user.last_name }}
-  </h4>
-</div>
-<div class="container">
-  <div class="col-sm-12 text-right mb10">
-    <a href="{% querystring '_export'='xlsx' %}">
-      <i class="fa fa-download fa-lg" aria-hidden="true"></i>
-    </a>
-  </div>
-  {% render_table table %}
+{% else %}
+  <p>
+    <a href="{% url 'contacts:add_contact' %}">Add</a> your first contact!
+  </p>
+{% endif %}
 </div>
 {% endblock %}

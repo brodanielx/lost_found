@@ -19,6 +19,7 @@ from contacts import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^api/user/data/$', views.user_activity),
     url(r'^contacts/', include('contacts.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.simple.urls')),

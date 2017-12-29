@@ -25,36 +25,20 @@ import json
 
 @login_required
 def index(request):
-    userprofile = UserProfile.objects.get(user=request.user)
-
-    now = datetime.datetime.now(pytz.utc)
-    tdelta = now - datetime.timedelta(days=14)
-    recently_added = Contact.objects.filter(
-                        created_at__gte=tdelta
-                        ).filter(
+    contacts_by_user_count = Contact.objects.filter(
                         added_by=request.user
-                        ).order_by('-created_at')
+                        ).count()
 
     total_contacts = Contact.objects.all().count()
     black_population = 89311
-    percent_lf_added = format((total_contacts / 89311 * 100), '.3f')
-
-    date_string = datetime.datetime.now().strftime('%m%d%y')
-
-    table = ContactTable(recently_added)
-    RequestConfig(request, paginate={'per_page': 25}).configure(table)
-    export_format = request.GET.get('_export', None)
-    if TableExport.is_valid_format(export_format):
-        exporter = TableExport(export_format, table)
-        return exporter.response('recent_contacts_{0}.{1}'.format(date_string, export_format))
+    percent_lf_added = format((total_contacts / 89311 * 100), '.2f')
 
     context = {
-        'userprofile' : userprofile,
+        # 'userprofile' : userprofile,
         'total_contacts' : total_contacts,
         'black_population' : black_population,
         'percent_lf_added' : percent_lf_added,
-        'recently_added': recently_added,
-        'table': table
+        'contacts_by_user_count': contacts_by_user_count
     }
     return render(request, 'contacts/index.html', context)
 
@@ -169,6 +153,8 @@ def user_activity(request):
     contacts = Contact.objects.filter(
                         added_by=request.user
                         )
+    if len(contacts) == 0:
+        return Response({'no_activity': True})
     contacts_last_12_weeks = contacts.filter(
                             created_at__gte=tdelta
                             )
