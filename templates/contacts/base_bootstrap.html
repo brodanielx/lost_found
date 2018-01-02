@@ -38,7 +38,7 @@
         <ul class="navbar-nav mr-auto">
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'contacts:index' %}">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{% url 'contacts:index' %}">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'contacts:my_contacts' user.username %}">My Contacts</a>
