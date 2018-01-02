@@ -210,7 +210,7 @@ def user_activity(request):
     labels_months = []
     for i in range(months_between+1):
         labels_months.append(
-            (first_month_date + relativedelta(months=+0)).strftime("%m/%y")
+            (first_month_date + relativedelta(months=+i)).strftime("%m/%y")
         )
 
     count_by_month = []

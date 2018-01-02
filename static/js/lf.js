@@ -9,22 +9,22 @@ let makeFormGroupsInline = () => {
 makeFormGroupsInline();
 
 
-let navs = document.querySelectorAll('.nav-item')
-let removeActive = () => {
-  navs.forEach(nav => {
-    if (nav.classList.contains('active')) {
-      nav.classList.remove('active')
-    }
-  })
-}
-
-let navBarClick = (nav) => {
-  removeActive();
-  nav.classList.add('active')
-}
-
-navs.forEach(nav => {
-  nav.addEventListener("click", () => {
-    navBarClick(nav)
-  });
-})
+// let navs = document.querySelectorAll('.nav-item')
+// let removeActive = () => {
+//   navs.forEach(nav => {
+//     if (nav.classList.contains('active')) {
+//       nav.classList.remove('active')
+//     }
+//   })
+// }
+//
+// let navBarClick = (nav) => {
+//   removeActive();
+//   nav.classList.add('active')
+// }
+//
+// navs.forEach(nav => {
+//   nav.addEventListener("click", () => {
+//     navBarClick(nav)
+//   });
+// })

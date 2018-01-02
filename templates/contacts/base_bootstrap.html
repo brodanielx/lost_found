@@ -24,6 +24,7 @@
     <link href="http://v4-alpha.getbootstrap.com/examples/starter-template/starter-template.css" rel="stylesheet">
     <link href="{% static "css/lf.css" %}" rel="stylesheet">
     <link href="{% static "css/signin.css" %}" rel="stylesheet">
+    <link href="{% static "css/footer.css" %}" rel="stylesheet">
   </head>
 
   <body>
@@ -74,10 +75,27 @@
       </div>
     </nav>
 
-    <div class="container">
+
+    <div class="container pb40">
         {% block body_block %}
         {% endblock %}
     </div><!-- /.container -->
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6">
+            <a href="http://noitampa.org/"
+               target="_blank"
+               class="ft14px text-muted">Tampa Study Group of The Nation Of Islam</a>
+          </div>
+          <div class="col-sm-6 text-right">
+            <a href="https://tnp.noi.org/auth/login/"
+               target="_blank"
+               class="ft14px text-muted">The Nation's Program</a>
+          </div>
+        </div>
+      </div>
+    </footer>
 
 
     <!-- Bootstrap core JavaScript

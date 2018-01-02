@@ -63,7 +63,17 @@
                         beginAtZero:true,
                         stepSize: 1,
                         max: max_by_week + 1
+                    },
+                    scaleLabel : {
+                      display: true,
+                      labelString: 'Lost Founds Added'
                     }
+                }],
+                xAxes: [{
+                  scaleLabel : {
+                    display: true,
+                    labelString: 'Week'
+                  }
                 }]
             },
             responsive: true,
@@ -97,7 +107,17 @@
                         beginAtZero:true,
                         stepSize: 1,
                         max: max_by_month + 1
+                    },
+                    scaleLabel : {
+                      display: true,
+                      labelString: 'Lost Founds Added'
                     }
+                }],
+                xAxes: [{
+                  scaleLabel : {
+                    display: true,
+                    labelString: 'Month'
+                  }
                 }]
             },
             responsive: true,
@@ -133,7 +153,7 @@
   </div>
 </div>
 <div class="container">
-  <h4 class="lead">
+  <h4 class="lead pb20">
     Lost Founds Added by {{ user.first_name }} {{ user.last_name }}: {{ contacts_by_user_count }}
   </h4>
   {% if contacts_by_user_count > 0 %}
