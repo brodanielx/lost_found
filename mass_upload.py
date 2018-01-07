@@ -11,6 +11,12 @@ from contacts.forms import is_numbers_only
 import openpyxl
 import string
 import pprint
+import json
+
+logging.basicConfig(filename='test.log', level=logging.DEBUG,
+    format='%(asctime)s:%(levelname)s:%(message)s')
+
+star_line = '*'*80
 
 def get_contacts_from_excel(filename):
 
@@ -33,8 +39,6 @@ def get_contacts_from_excel(filename):
                     handle_none(sheet['{}{}'.format(cols[0], row_str)].value, ''),
                 'last_name' :
                     handle_none(sheet['{}{}'.format(cols[1], row_str)].value, ''),
-                # 'phone_number' : 
-                #     str(int(sheet['{}{}'.format(cols[2], row_str)].value)) if sheet['{}{}'.format(cols[2], row_str)].value != None else '',
                 'gender' :
                     handle_none(sheet['{}{}'.format(cols[3], row_str)].value, ''),
                 'email' :
@@ -45,8 +49,6 @@ def get_contacts_from_excel(filename):
                     handle_none(sheet['{}{}'.format(cols[6], row_str)].value, ''),
                 'state' :
                     handle_none(sheet['{}{}'.format(cols[7], row_str)].value, 'FL'),
-                # 'zip_code' :
-                #     str(int(sheet['{}{}'.format(cols[8], row_str)].value)) if sheet['{}{}'.format(cols[8], row_str)].value != None else '',
             }
             try:
                 contact['phone_number'] = str(int(handle_none(sheet['{}{}'.format(cols[2], row_str)].value, '')))
@@ -66,6 +68,14 @@ def get_contacts_from_excel(filename):
             row += 1
         else:
             at_end = True
+            logging.debug(
+                '{0}{1}{0}Contacts to import: {2} {0}Number of contacts to import: {3}{0}{1}{0}'.format(
+                    '\n',
+                    star_line,
+                    json.dumps(contacts, indent=2),
+                    len(contacts)
+                )
+            )
             return contacts
 
 
@@ -134,5 +144,5 @@ def validate_contact(contact):
 
 if __name__ == '__main__':
     contacts = get_contacts_from_excel('mass_upload.xlsx')
-    pprint.pprint(contacts)
+
     # add_contacts(contacts, 'brodanielx')
