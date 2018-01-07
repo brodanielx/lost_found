@@ -29,25 +29,39 @@ def get_contacts_from_excel(filename):
         if sheet[first_cell_of_row].value != None:
             row_str = str(row)
             contact = {
-                'first_name' : sheet['{}{}'.format(cols[0], row_str)].value,
+                'first_name' :
+                    handle_none(sheet['{}{}'.format(cols[0], row_str)].value, ''),
                 'last_name' :
-                    sheet['{}{}'.format(cols[1], row_str)].value if sheet['{}{}'.format(cols[1], row_str)].value != None else '',
-                'phone_number' : str(int(sheet['{}{}'.format(cols[2], row_str)].value)) if sheet['{}{}'.format(cols[2], row_str)].value != None else '',
-                'gender' : sheet['{}{}'.format(cols[3], row_str)].value,
+                    handle_none(sheet['{}{}'.format(cols[1], row_str)].value, ''),
+                # 'phone_number' : 
+                #     str(int(sheet['{}{}'.format(cols[2], row_str)].value)) if sheet['{}{}'.format(cols[2], row_str)].value != None else '',
+                'gender' :
+                    handle_none(sheet['{}{}'.format(cols[3], row_str)].value, ''),
                 'email' :
-                    sheet['{}{}'.format(cols[4], row_str)].value if sheet['{}{}'.format(cols[4], row_str)].value != None else '',
+                    handle_none(sheet['{}{}'.format(cols[4], row_str)].value, ''),
                 'street_address' :
-                    sheet['{}{}'.format(cols[5], row_str)].value if sheet['{}{}'.format(cols[5], row_str)].value != None else '',
+                    handle_none(sheet['{}{}'.format(cols[5], row_str)].value, ''),
                 'city' :
-                    sheet['{}{}'.format(cols[6], row_str)].value if sheet['{}{}'.format(cols[6], row_str)].value != None else '',
+                    handle_none(sheet['{}{}'.format(cols[6], row_str)].value, ''),
                 'state' :
-                    sheet['{}{}'.format(cols[7], row_str)].value if sheet['{}{}'.format(cols[7], row_str)].value != None else 'FL',
-                'zip_code' :
-                    str(int(sheet['{}{}'.format(cols[8], row_str)].value)) if sheet['{}{}'.format(cols[8], row_str)].value != None else '',
+                    handle_none(sheet['{}{}'.format(cols[7], row_str)].value, 'FL'),
+                # 'zip_code' :
+                #     str(int(sheet['{}{}'.format(cols[8], row_str)].value)) if sheet['{}{}'.format(cols[8], row_str)].value != None else '',
             }
+            try:
+                contact['phone_number'] = str(int(handle_none(sheet['{}{}'.format(cols[2], row_str)].value, '')))
+            except ValueError:
+                contact['phone_number'] = ''
+
+            try:
+                contact['zip_code'] = str(int(handle_none(sheet['{}{}'.format(cols[8], row_str)].value, '')))
+            except ValueError:
+                contact['zip_code'] = ''
+
             if (validate_contact(contact) and
                 phone_number_is_valid(contact['phone_number']) and
-                zip_code_is_valid(contact['zip_code'])):
+                zip_code_is_valid(contact['zip_code']) and
+                gender_is_valid(contact['gender'])):
                 contacts.append(contact)
             row += 1
         else:
@@ -77,10 +91,14 @@ def add_contacts(contacts, username):
                     c.gender, c.full_name, c.phone_number_formated, c.email, c.added_by
                 ))
 
-def validate_contact(contact):
-    if (bool(contact['first_name']) and
-        bool(contact['phone_number']) and
-        bool(contact['gender'])):
+def handle_none(val, rtn):
+    if val == None:
+        return rtn
+    return val
+
+def gender_is_valid(gender):
+    gender_title = gender.title()
+    if gender_title == 'Bro' or gender_title == 'Sis':
         return True
     return False
 
@@ -105,6 +123,13 @@ def zip_code_is_valid(zip_code_string):
         if len(zip_code_string) > 0 and not len(zip_code_string) == 5:
             return False
     return True
+
+def validate_contact(contact):
+    if (bool(contact['first_name']) and
+        bool(contact['phone_number']) and
+        bool(contact['gender'])):
+        return True
+    return False
 
 
 if __name__ == '__main__':
