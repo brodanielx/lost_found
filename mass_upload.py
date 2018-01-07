@@ -7,8 +7,10 @@ django.setup()
 import logging
 from contacts.models import Contact
 from django.contrib.auth.models import User
+from contacts.forms import is_numbers_only
 import openpyxl
 import string
+import pprint
 
 def get_contacts_from_excel(filename):
 
@@ -30,7 +32,7 @@ def get_contacts_from_excel(filename):
                 'first_name' : sheet['{}{}'.format(cols[0], row_str)].value,
                 'last_name' :
                     sheet['{}{}'.format(cols[1], row_str)].value if sheet['{}{}'.format(cols[1], row_str)].value != None else '',
-                'phone_number' : str(int(sheet['{}{}'.format(cols[2], row_str)].value)),
+                'phone_number' : str(int(sheet['{}{}'.format(cols[2], row_str)].value)) if sheet['{}{}'.format(cols[2], row_str)].value != None else '',
                 'gender' : sheet['{}{}'.format(cols[3], row_str)].value,
                 'email' :
                     sheet['{}{}'.format(cols[4], row_str)].value if sheet['{}{}'.format(cols[4], row_str)].value != None else '',
@@ -43,18 +45,15 @@ def get_contacts_from_excel(filename):
                 'zip_code' :
                     str(int(sheet['{}{}'.format(cols[8], row_str)].value)) if sheet['{}{}'.format(cols[8], row_str)].value != None else '',
             }
-            if (validateContact(contact)):
+            if (validate_contact(contact) and
+                phone_number_is_valid(contact['phone_number']) and
+                zip_code_is_valid(contact['zip_code'])):
                 contacts.append(contact)
             row += 1
         else:
             at_end = True
             return contacts
 
-
-def validateContact(contact):
-    if bool(contact['first_name']) and bool(contact['phone_number']) and bool(contact['gender']):
-        return True
-    return False
 
 def add_contact(contact, user):
     c = Contact.objects.get_or_create(added_by=user, phone_number=contact['phone_number'])[0]
@@ -69,14 +68,46 @@ def add_contact(contact, user):
     c.save()
 
 def add_contacts(contacts, username):
-    user = User.objects.get(username=username)
-    for contact in contacts:
-        add_contact(contact, user)
-    for c in Contact.objects.all():
-        print('- {0} - {1} - {2} - {3} - {4}'.format(
-                c.gender, c.full_name, c.phone_number_formated, c.email, c.added_by
-            ))
+    if len(contacts) > 0:
+        user = User.objects.get(username=username)
+        for contact in contacts:
+            add_contact(contact, user)
+        for c in Contact.objects.all():
+            print('- {0} - {1} - {2} - {3} - {4}'.format(
+                    c.gender, c.full_name, c.phone_number_formated, c.email, c.added_by
+                ))
+
+def validate_contact(contact):
+    if (bool(contact['first_name']) and
+        bool(contact['phone_number']) and
+        bool(contact['gender'])):
+        return True
+    return False
+
+def phone_number_is_valid(phone_number_string):
+    try:
+        is_numbers_only(phone_number_string)
+    except ValueError:
+        return False
+    else:
+        if not (len(phone_number_string) == 10
+                or (len(phone_number_string) == 11
+                and phone_number_string[0] == '1')):
+            return False
+    return True
+
+def zip_code_is_valid(zip_code_string):
+    try:
+        is_numbers_only(zip_code_string)
+    except ValueError:
+        return False
+    else:
+        if len(zip_code_string) > 0 and not len(zip_code_string) == 5:
+            return False
+    return True
+
 
 if __name__ == '__main__':
     contacts = get_contacts_from_excel('mass_upload.xlsx')
-    add_contacts(contacts, 'brodanielx')
+    pprint.pprint(contacts)
+    # add_contacts(contacts, 'brodanielx')
