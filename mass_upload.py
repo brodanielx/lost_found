@@ -47,17 +47,18 @@ def get_contacts_from_excel(filename):
                     handle_none(sheet['{}{}'.format(cols[5], row_str)].value, ''),
                 'city' :
                     handle_none(sheet['{}{}'.format(cols[6], row_str)].value, ''),
-                'state' :
-                    handle_none(sheet['{}{}'.format(cols[7], row_str)].value, 'FL'),
+                'state' : 'FL',
             }
             try:
                 contact['phone_number'] = str(int(handle_none(sheet['{}{}'.format(cols[2], row_str)].value, '')))
-            except ValueError:
+            except ValueError as e:
+                logging.debug('phone_number error: \n{}'.format(e))
                 contact['phone_number'] = ''
 
             try:
                 contact['zip_code'] = str(int(handle_none(sheet['{}{}'.format(cols[8], row_str)].value, '')))
-            except ValueError:
+            except ValueError as e:
+                logging.debug('zip_code error: \n{}'.format(e))
                 contact['zip_code'] = ''
 
             if (validate_contact(contact) and
@@ -143,6 +144,6 @@ def validate_contact(contact):
 
 
 if __name__ == '__main__':
-    contacts = get_contacts_from_excel('mass_upload.xlsx')
+    contacts = get_contacts_from_excel('mass_upload_copy.xlsx')
 
     # add_contacts(contacts, 'brodanielx')
