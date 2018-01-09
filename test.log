@@ -1,0 +1,63 @@
+2018-01-09 15:26:01,106:DEBUG:phone_number error: 
+invalid literal for int() with base 10: ''
+2018-01-09 15:26:01,107:DEBUG:zip_code error: 
+invalid literal for int() with base 10: '3361a'
+2018-01-09 15:26:01,107:DEBUG:zip_code error: 
+invalid literal for int() with base 10: ''
+2018-01-09 15:26:01,107:DEBUG:
+********************************************************************************
+Contacts to import (4):
+ [
+  {
+    "first_name": "Courtney",
+    "last_name": "",
+    "gender": "Sis",
+    "email": "",
+    "street_address": "Silver Oaks",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8135090000",
+    "zip_code": "33610"
+  },
+  {
+    "first_name": "Kenisha",
+    "last_name": "",
+    "gender": "Sis",
+    "email": "",
+    "street_address": "Silver Oaks",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8133687985",
+    "zip_code": ""
+  },
+  {
+    "first_name": "Quinton",
+    "last_name": "",
+    "gender": "Bro",
+    "email": "",
+    "street_address": "Silver Oaks",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8138479761",
+    "zip_code": ""
+  },
+  {
+    "first_name": "Sherrod",
+    "last_name": "",
+    "gender": "Bro",
+    "email": "",
+    "street_address": "Silver Oaks",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8138503521",
+    "zip_code": "33610"
+  }
+] 
+Number of contacts to import: 4
+********************************************************************************
+
+2018-01-09 15:26:01,132:DEBUG:4 contacts successfully updated
+2018-01-09 15:26:01,134:DEBUG:- Sis - Courtney  - 813-509-0000 - brodanielx -
+2018-01-09 15:26:01,136:DEBUG:- Sis - Kenisha  - 813-368-7985 - brodanielx -
+2018-01-09 15:26:01,137:DEBUG:- Bro - Quinton  - 813-847-9761 - brodanielx -
+2018-01-09 15:26:01,138:DEBUG:- Bro - Sherrod  - 813-850-3521 - brodanielx -

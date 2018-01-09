@@ -12,6 +12,9 @@ import openpyxl
 import string
 import pprint
 import json
+import traceback
+import datetime
+import pytz
 
 logging.basicConfig(filename='test.log', level=logging.DEBUG,
     format='%(asctime)s:%(levelname)s:%(message)s')
@@ -70,7 +73,7 @@ def get_contacts_from_excel(filename):
         else:
             at_end = True
             logging.debug(
-                '{0}{1}{0}Contacts to import: {2} {0}Number of contacts to import: {3}{0}{1}{0}'.format(
+                '{0}{1}{0}Contacts to import ({3}):{0} {2} {0}Number of contacts to import: {3}{0}{1}{0}'.format(
                     '\n',
                     star_line,
                     json.dumps(contacts, indent=2),
@@ -81,26 +84,42 @@ def get_contacts_from_excel(filename):
 
 
 def add_contact(contact, user):
-    c = Contact.objects.get_or_create(added_by=user, phone_number=contact['phone_number'])[0]
-    c.gender = contact['gender']
-    c.first_name = contact['first_name']
-    c.last_name = contact['last_name']
-    c.email = contact['email']
-    c.street_address = contact['street_address']
-    c.city = contact['city']
-    c.state = contact['state']
-    c.zip_code = contact['zip_code']
-    c.save()
+    try:
+        c = Contact.objects.get_or_create(added_by=user, phone_number=contact['phone_number'])[0]
+    except:
+        logging.debug('add_contact error: \n{}'.format(traceback.format_exc()))
+    else:
+        c.gender = contact['gender']
+        c.first_name = contact['first_name']
+        c.last_name = contact['last_name']
+        c.email = contact['email']
+        c.street_address = contact['street_address']
+        c.city = contact['city']
+        c.state = contact['state']
+        c.zip_code = contact['zip_code']
+        c.save()
 
 def add_contacts(contacts, username):
     if len(contacts) > 0:
+        tdelta = datetime.datetime.now(pytz.utc) - datetime.timedelta(seconds=10)
         user = User.objects.get(username=username)
         for contact in contacts:
             add_contact(contact, user)
-        for c in Contact.objects.all():
-            print('- {0} - {1} - {2} - {3} - {4}'.format(
-                    c.gender, c.full_name, c.phone_number_formated, c.email, c.added_by
-                ))
+        contacts_just_added = Contact.objects.filter(
+                    updated_at__gte=tdelta
+                    ).filter(
+                    added_by=user
+                    )
+        logging.debug('{0} contacts successfully updated'.format(
+                len(contacts_just_added)
+            )
+        )
+        for c in contacts_just_added:
+            logging.debug(
+                '- {0} - {1} - {2} - {3} -'.format(
+                c.gender, c.full_name, c.phone_number_formated, c.added_by
+                )
+            )
 
 def handle_none(val, rtn):
     if val == None:
@@ -145,5 +164,4 @@ def validate_contact(contact):
 
 if __name__ == '__main__':
     contacts = get_contacts_from_excel('mass_upload_copy.xlsx')
-
-    # add_contacts(contacts, 'brodanielx')
+    add_contacts(contacts, 'brodanielx')

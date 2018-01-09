@@ -159,7 +159,7 @@ def user_activity(request):
                             created_at__gte=tdelta
                             )
 
-#***********************BY WEEK*******************************************************
+#***********************BY WEEK*************************************************
 
     grouped_by_week = itertools.groupby(
             contacts_last_12_weeks, lambda record: record.created_at.strftime("%W/%y")
