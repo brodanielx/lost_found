@@ -44,8 +44,15 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'contacts:my_contacts' user.username %}">My Contacts</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="{% url 'contacts:add_contact' %}">Add Contact</a>
+          </li> -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown00" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Contacts</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown00">
+              <a class="dropdown-item" href="{% url 'contacts:add_contact' %}">Add One</a>
+              <a class="dropdown-item" href="{% url 'contacts:import_contacts' %}">Add Many</a>
+            </div>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>

@@ -4,6 +4,9 @@ from crispy_forms.layout import Submit
 from django.contrib.auth.models import User
 from contacts.models import Contact
 
+class ImportContactsForm(forms.Form):
+    contact_file = forms.FileField()
+
 class ContactForm(forms.ModelForm):
 
     helper = FormHelper()

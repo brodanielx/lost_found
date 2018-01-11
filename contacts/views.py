@@ -9,7 +9,7 @@ from django.core import serializers
 from django.urls import reverse
 from django.contrib.auth.models import User
 from contacts.models import Contact, UserProfile
-from contacts.forms import ContactForm
+from contacts.forms import ContactForm, ImportContactsForm
 from django_tables2 import RequestConfig
 from django_tables2.export.export import TableExport
 from .tables import ContactTable
@@ -122,6 +122,19 @@ def edit_contact(request, pk):
         'contact' : contact
     }
     return render(request, 'contacts/edit_contact.html', context)
+
+@login_required
+def import_contacts(request):
+    form = ImportContactsForm()
+    if request.method == 'POST':
+        form = ImportContactsForm(request.POST)
+        if form.is_valid():
+            if request.user:
+                return HttpResponseRedirect(reverse('contacts:index'))
+        else:
+            print(form.errors)
+    context = {'form' : form}
+    return render(request, 'contacts/import_contacts.html', context)
 
 def search(request):
     result_list = []

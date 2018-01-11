@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^mycontacts/(?P<username>[\w\-]+)/$',
         views.my_contacts, name='my_contacts'),
     url(r'^addcontact/$', views.add_contact, name='add_contact'),
+    url(r'^importcontacts/$', views.import_contacts, name='import_contacts'),
     url(r'^contact/(?P<pk>[\w\-]+)/$',
         views.show_contact, name='show_contact'),
     url(r'^editcontact/(?P<pk>[\w\-]+)/$',
