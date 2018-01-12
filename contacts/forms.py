@@ -5,7 +5,14 @@ from django.contrib.auth.models import User
 from contacts.models import Contact
 
 class ImportContactsForm(forms.Form):
-    contact_file = forms.FileField()
+    # contact_file = forms.FileField()
+    helper = FormHelper()
+    helper.form_method = 'POST'
+    helper.form_class = 'form-horizontal'
+    helper.label_class = 'col-sm-2 text-right pt5'
+    helper.field_class = 'col-sm-6'
+    helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
+    contact_file = forms.FileField(label="Contacts: ")
 
 class ContactForm(forms.ModelForm):
 

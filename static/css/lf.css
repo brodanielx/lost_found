@@ -76,3 +76,7 @@ h1, h2, h3 {
 .ft14px {
   font-size: 14px
 }
+
+.underlined {
+  text-decoration: underline;
+}

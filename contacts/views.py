@@ -127,7 +127,7 @@ def edit_contact(request, pk):
 def import_contacts(request):
     form = ImportContactsForm()
     if request.method == 'POST':
-        form = ImportContactsForm(request.POST)
+        form = ImportContactsForm(request.POST, request.FILES)
         if form.is_valid():
             if request.user:
                 return HttpResponseRedirect(reverse('contacts:index'))

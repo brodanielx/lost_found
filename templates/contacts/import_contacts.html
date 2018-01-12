@@ -1,4 +1,5 @@
 {% extends 'contacts/base_bootstrap.html' %}
+{% load crispy_forms_tags %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -8,12 +9,24 @@
 {% block body_block %}
   <h1 class="pb20">Import Contacts</h1>
   <div class="row">
+    <div class="cols-sm-12">
+      <p class="lead ml15">
+        Add multiple contacts by downloading and completing the
+        <a class="underlined"
+           href="https://docs.google.com/spreadsheets/d/1rmKLbZaeNwSlUOShyncGGnWEvA9SVH4GXIqHc459bX8/export?format=xlsx">
+          Import Contacts Template
+        </a>.
+      </p>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-sm-12">
-      <form action="." method="POST" enctype="multipart/form-data">
+      <!-- <form action="." method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{form.as_p}}
         <button type="submit">Submit</button>
-      </form>
+      </form> -->
+      {% crispy form %}
     </div>
   </div>
 {% endblock %}
