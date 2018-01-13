@@ -19,9 +19,10 @@ import itertools
 import pytz
 import logging
 import json
+import os
 
-# logging.basicConfig(filename='test.log', level=logging.DEBUG,
-#     format='%(asctime)s:%(levelname)s:%(message)s')
+logging.basicConfig(filename='test.log', level=logging.DEBUG,
+    format='%(asctime)s:%(levelname)s:%(message)s')
 
 @login_required
 def index(request):
@@ -130,6 +131,16 @@ def import_contacts(request):
         form = ImportContactsForm(request.POST, request.FILES)
         if form.is_valid():
             if request.user:
+                username = request.user.username
+                for filename, f in request.FILES.items():
+                    fname = request.FILES[filename].name
+                    size = request.FILES[filename].size
+                    ext = os.path.splitext(request.FILES[filename].name)[1]
+                    logging.debug(
+                        '\n***import contacts file***\nuser: {0}\nfile: {1}\nsize: {2} bytes'.format(
+                            username ,fname, size
+                            )
+                        )
                 return HttpResponseRedirect(reverse('contacts:index'))
         else:
             print(form.errors)
