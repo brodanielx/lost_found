@@ -3,16 +3,30 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.contrib.auth.models import User
 from contacts.models import Contact
+import os
+import logging
+
+logging.basicConfig(filename='test.log', level=logging.DEBUG,
+    format='%(asctime)s:%(levelname)s:%(message)s')
 
 class ImportContactsForm(forms.Form):
-    # contact_file = forms.FileField()
     helper = FormHelper()
     helper.form_method = 'POST'
     helper.form_class = 'form-horizontal'
     helper.label_class = 'col-sm-2 text-right pt5'
-    helper.field_class = 'col-sm-6'
+    helper.field_class = 'col-sm-10'
     helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
     contact_file = forms.FileField(label="Contacts: ")
+
+    def clean_contact_file(self):
+        contact_file = self.cleaned_data['contact_file']
+        ext = os.path.splitext(contact_file.name)[1]
+        try:
+            is_file_type(contact_file.name, '.xlsx')
+        except Exception as e:
+            logging.debug('\n{}'.format(e))
+            raise forms.ValidationError('Invalid file. File extension must be \'.xlsx\'.')
+        return contact_file
 
 class ContactForm(forms.ModelForm):
 
@@ -121,3 +135,11 @@ class ContactForm(forms.ModelForm):
 def is_numbers_only(num_string):
     for char in list(num_string):
         int(char)
+
+def is_file_type(filename, ext):
+    if os.path.splitext(filename)[1] != ext:
+        raise Exception(
+            'File Type Error: {0} not {1}'.format(
+                os.path.splitext(filename)[1], ext
+                )
+            )

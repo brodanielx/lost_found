@@ -14,10 +14,12 @@ from django_tables2 import RequestConfig
 from django_tables2.export.export import TableExport
 from .tables import ContactTable
 from dateutil.relativedelta import relativedelta
+from mass_upload import import_contacts
 import datetime
 import itertools
 import pytz
 import logging
+import traceback
 import json
 import os
 
@@ -141,11 +143,51 @@ def import_contacts(request):
                             username ,fname, size
                             )
                         )
-                return HttpResponseRedirect(reverse('contacts:index'))
+                    try:
+                        import_contacts(fname, username)
+                    except:
+                        logging.debug(
+                            'Import Contacts Error: \n{}'.format(
+                                traceback.format_exc()
+                            )
+                        )
+                        return HttpResponseRedirect(reverse('contacts:index'))
+                    else:
+                        return HttpResponseRedirect(reverse('contacts:index'))
         else:
             print(form.errors)
     context = {'form' : form}
     return render(request, 'contacts/import_contacts.html', context)
+
+def import_success(request):
+    if request.user.username != username:
+        return redirect('index')
+    tdelta = datetime.datetime.now(pytz.utc) - datetime.timedelta(seconds=7)
+    contacts = Contact.objects.filter(
+                updated_at__gte=tdelta
+                ).filter(
+                added_by=request.user
+                )
+    count = contacts.count()
+
+    date_string = datetime.datetime.now().strftime('%m%d%y')
+
+    table = ContactTable(contacts)
+    RequestConfig(request, paginate={'per_page': 25}).configure(table)
+    export_format = request.GET.get('_export', None)
+    if TableExport.is_valid_format(export_format):
+        exporter = TableExport(export_format, table)
+        return exporter.response(
+            'recently_added_contacts_{0}.{1}'.format(date_string, export_format)
+        )
+
+    context = {
+        'contacts' : contacts,
+        'count': count,
+        'user' : request.user,
+        'table': table
+    }
+    return render(request, 'contacts/import_success.html', context)
 
 def search(request):
     result_list = []

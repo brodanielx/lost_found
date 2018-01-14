@@ -101,7 +101,7 @@ def add_contact(contact, user):
 
 def add_contacts(contacts, username):
     if len(contacts) > 0:
-        tdelta = datetime.datetime.now(pytz.utc) - datetime.timedelta(seconds=10)
+        tdelta = datetime.datetime.now(pytz.utc) - datetime.timedelta(seconds=7)
         user = User.objects.get(username=username)
         for contact in contacts:
             add_contact(contact, user)
@@ -161,6 +161,9 @@ def validate_contact(contact):
         return True
     return False
 
+def import_contacts(filename, username):
+    contacts = get_contacts_from_excel(filename)
+    add_contacts(contacts, username)
 
 if __name__ == '__main__':
     contacts = get_contacts_from_excel('mass_upload_copy.xlsx')
