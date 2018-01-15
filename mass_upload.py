@@ -28,7 +28,7 @@ def get_contacts_from_excel(filename):
     sheet = workbook.get_sheet_by_name(sheet_names[0])
 
     cols = list(string.ascii_uppercase)[1:10]
-    row = 9
+    row = 11
 
     at_end = False
     contacts = []

@@ -1,0 +1,134 @@
+2018-01-15 15:07:47,664:DEBUG:
+***import contacts file***
+user: brodanielx
+file: import_contacts_template.xlsx
+size: 4840 bytes
+2018-01-15 15:07:47,665:DEBUG:Import Contacts Error: 
+Traceback (most recent call last):
+  File "/Users/danielnilsson-cole/Desktop/projects/lost_found_project/contacts/views.py", line 147, in import_contacts
+    import_contacts(fname, username)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 22, in _wrapped_view
+    if test_func(request.user):
+AttributeError: 'str' object has no attribute 'user'
+
+2018-01-15 15:12:13,611:DEBUG:
+***import contacts file***
+user: brodanielx
+file: import_contacts_template.xlsx
+size: 4840 bytes
+2018-01-15 15:12:13,612:DEBUG:Import Contacts Error: 
+Traceback (most recent call last):
+  File "/Users/danielnilsson-cole/Desktop/projects/lost_found_project/contacts/views.py", line 147, in import_contacts
+    import_contacts(fname, request.user.username)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 22, in _wrapped_view
+    if test_func(request.user):
+AttributeError: 'str' object has no attribute 'user'
+
+2018-01-15 15:14:42,447:DEBUG:
+***import contacts file***
+user: brodanielx
+file: import_contacts_template.xlsx
+size: 4840 bytes
+2018-01-15 15:14:42,447:DEBUG:
+Import Contacts Error: 
+Traceback (most recent call last):
+  File "/Users/danielnilsson-cole/Desktop/projects/lost_found_project/contacts/views.py", line 147, in import_contacts
+    import_contacts(fname, username)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 22, in _wrapped_view
+    if test_func(request.user):
+AttributeError: 'str' object has no attribute 'user'
+
+2018-01-15 15:18:17,852:DEBUG:
+***import contacts file***
+user: brodanielx
+file: import_contacts_template.xlsx
+size: 4840 bytes
+2018-01-15 15:18:17,852:ERROR:Internal Server Error: /contacts/importcontacts/
+Traceback (most recent call last):
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/danielnilsson-cole/Desktop/projects/lost_found_project/contacts/views.py", line 147, in import_contacts
+    import_contacts(fname, username)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 22, in _wrapped_view
+    if test_func(request.user):
+AttributeError: 'str' object has no attribute 'user'
+2018-01-15 15:20:21,346:DEBUG:
+***import contacts file***
+user: brodanielx
+file: import_contacts_template.xlsx
+size: 4840 bytes
+2018-01-15 15:20:21,346:DEBUG:
+Import Contacts Error: 
+Traceback (most recent call last):
+  File "/Users/danielnilsson-cole/Desktop/projects/lost_found_project/contacts/views.py", line 147, in import_contacts
+    import_contacts(fname, request.USER)
+AttributeError: 'WSGIRequest' object has no attribute 'USER'
+
+2018-01-15 15:22:34,426:DEBUG:
+***import contacts file***
+user: brodanielx
+file: import_contacts_template.xlsx
+size: 4840 bytes
+2018-01-15 15:22:34,426:ERROR:Internal Server Error: /contacts/importcontacts/
+Traceback (most recent call last):
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/danielnilsson-cole/Desktop/projects/lost_found_project/contacts/views.py", line 147, in import_contacts
+    import_contacts(fname, username)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 22, in _wrapped_view
+    if test_func(request.user):
+AttributeError: 'str' object has no attribute 'user'
+2018-01-15 15:23:13,232:DEBUG:
+***import contacts file***
+user: brodanielx
+file: import_contacts_template.xlsx
+size: 4840 bytes
+2018-01-15 15:23:13,232:ERROR:Internal Server Error: /contacts/importcontacts/
+Traceback (most recent call last):
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/danielnilsson-cole/Desktop/projects/lost_found_project/contacts/views.py", line 147, in import_contacts
+    import_contacts(fname, username)
+TypeError: import_contacts() takes 1 positional argument but 2 were given
+2018-01-15 15:25:20,752:DEBUG:
+***import contacts file***
+user: brodanielx
+file: import_contacts_template.xlsx
+size: 4840 bytes
+2018-01-15 15:25:20,752:ERROR:Internal Server Error: /contacts/importcontacts/
+Traceback (most recent call last):
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/danielnilsson-cole/Desktop/projects/lost_found_project/contacts/views.py", line 147, in import_contacts
+    mass_upload.import_contacts(fname, username)
+  File "/Users/danielnilsson-cole/Desktop/projects/lost_found_project/mass_upload.py", line 165, in import_contacts
+    contacts = get_contacts_from_excel(filename)
+  File "/Users/danielnilsson-cole/Desktop/projects/lost_found_project/mass_upload.py", line 26, in get_contacts_from_excel
+    workbook = openpyxl.load_workbook(filename)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/openpyxl/reader/excel.py", line 171, in load_workbook
+    archive = _validate_archive(filename)
+  File "/Users/danielnilsson-cole/lost-found-env/lib/python3.6/site-packages/openpyxl/reader/excel.py", line 118, in _validate_archive
+    archive = ZipFile(filename, 'r', ZIP_DEFLATED)
+  File "/usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/zipfile.py", line 1090, in __init__
+    self.fp = io.open(file, filemode)
+FileNotFoundError: [Errno 2] No such file or directory: 'import_contacts_template.xlsx'

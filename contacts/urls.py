@@ -10,6 +10,8 @@ urlpatterns = [
         views.my_contacts, name='my_contacts'),
     url(r'^addcontact/$', views.add_contact, name='add_contact'),
     url(r'^importcontacts/$', views.import_contacts, name='import_contacts'),
+    url(r'^importcontacts/success/$', views.import_success, name='import_success'),
+    url(r'^importcontacts/fail/$', views.import_failure, name='import_failure'),
     url(r'^contact/(?P<pk>[\w\-]+)/$',
         views.show_contact, name='show_contact'),
     url(r'^editcontact/(?P<pk>[\w\-]+)/$',

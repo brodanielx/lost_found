@@ -14,7 +14,7 @@ from django_tables2 import RequestConfig
 from django_tables2.export.export import TableExport
 from .tables import ContactTable
 from dateutil.relativedelta import relativedelta
-from mass_upload import import_contacts
+import mass_upload
 import datetime
 import itertools
 import pytz
@@ -126,7 +126,7 @@ def edit_contact(request, pk):
     }
     return render(request, 'contacts/edit_contact.html', context)
 
-@login_required
+
 def import_contacts(request):
     form = ImportContactsForm()
     if request.method == 'POST':
@@ -143,25 +143,23 @@ def import_contacts(request):
                             username ,fname, size
                             )
                         )
-                    try:
-                        import_contacts(fname, username)
-                    except:
-                        logging.debug(
-                            'Import Contacts Error: \n{}'.format(
-                                traceback.format_exc()
-                            )
-                        )
-                        return HttpResponseRedirect(reverse('contacts:index'))
-                    else:
-                        return HttpResponseRedirect(reverse('contacts:index'))
+                    # try:
+                    mass_upload.import_contacts(fname, username)
+                    # except:
+                    #     logging.debug(
+                    #         '\nImport Contacts Error: \n{}'.format(
+                    #             traceback.format_exc()
+                    #         )
+                    #     )
+                    #     return HttpResponseRedirect(reverse('contacts:import_failure'))
+                    # else:
+                    #     return HttpResponseRedirect(reverse('contacts:import_success'))
         else:
             print(form.errors)
     context = {'form' : form}
     return render(request, 'contacts/import_contacts.html', context)
 
 def import_success(request):
-    if request.user.username != username:
-        return redirect('index')
     tdelta = datetime.datetime.now(pytz.utc) - datetime.timedelta(seconds=7)
     contacts = Contact.objects.filter(
                 updated_at__gte=tdelta
@@ -187,7 +185,12 @@ def import_success(request):
         'user' : request.user,
         'table': table
     }
+    if count == 0:
+        return HttpResponseRedirect(reverse('contacts:index'))
     return render(request, 'contacts/import_success.html', context)
+
+def import_failure(request):
+    return render(request, 'contacts/import_failure.html', {})
 
 def search(request):
     result_list = []

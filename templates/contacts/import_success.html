@@ -1,0 +1,33 @@
+{% extends 'contacts/base_bootstrap.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load django_tables2 %}
+
+{% block body_block %}
+
+  <div class="jumbotron jumbotron-fluid slim-jumbo">
+  <div class="container">
+    {% if count > 0 %}
+    <div class="row">
+      <div class="col-sm-11">
+        <p class="lead nmb">You successfully updated {{count}} Lost Founds.</p>
+      </div>
+      <div class="col-sm-1 text-right">
+        <a href="{% querystring '_export'='xlsx' %}">
+          <i class="fa fa-download fa-lg" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% if count > 0 %}
+<div class="container">
+{% render_table table %}
+</div>
+{% else %}
+<p>
+</p>
+{% endif %}
+{% endblock %}

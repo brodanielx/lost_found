@@ -3,26 +3,21 @@
 {% load staticfiles %}
 
 {% block title_block %}
-  Import Contacts
+  Import Failed
 {% endblock %}
 
 {% block body_block %}
-  <h1 class="pb20">Import Contacts</h1>
+  <h1 class="pb20">Import Failed</h1>
   <div class="row">
     <div class="cols-sm-12">
       <p class="lead ml15">
-        Add multiple contacts by downloading and completing the
+        Something went wrong. Please try again by downloading and completing the
         <a class="underlined"
            href="https://docs.google.com/spreadsheets/d/1rmKLbZaeNwSlUOShyncGGnWEvA9SVH4GXIqHc459bX8/export?format=xlsx">
           Import Contacts Template</a> file.
       </p>
       <hr>
-      <p class="lead ml15">After completing the template file, upload and submit the file using the form below.</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      {% crispy form %}
+      <p class="lead ml15">After completing the template file, upload and submit the file <a href="{% url 'contacts:import_contacts' %}">here</a>.</p>
     </div>
   </div>
 {% endblock %}
