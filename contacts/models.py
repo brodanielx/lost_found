@@ -25,7 +25,7 @@ class Contact(models.Model):
     zip_code = models.CharField(max_length=5)
     added_by = models.ForeignKey(User)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date Added")
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Last Updated")
 
     def save(self, *args, **kwargs):
         self.full_name = '{0} {1}'.format(self.first_name, self.last_name)

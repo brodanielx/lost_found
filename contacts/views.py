@@ -52,7 +52,7 @@ def my_contacts(request, username):
         return redirect('index')
     contacts = Contact.objects.filter(
         added_by=request.user
-    ).order_by('-created_at')
+    ).order_by('-updated_at')
     count = contacts.count()
 
     date_string = datetime.datetime.now().strftime('%m%d%y')
@@ -130,6 +130,8 @@ def edit_contact(request, pk):
 
 
 def import_contacts(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('contacts:index'))
     form = ImportContactsForm()
     if request.method == 'POST':
         form = ImportContactsForm(request.POST, request.FILES)
@@ -147,30 +149,32 @@ def import_contacts(request):
                 save_path = os.path.join(settings.MEDIA_ROOT, 'uploads', request.FILES['contact_file'].name)
                 path = default_storage.save(save_path, request.FILES['contact_file'])
                 print(path)
-                # try:
-                # mass_upload.import_contacts(fname, username)
-                # except:
-                #     logging.debug(
-                #         '\nImport Contacts Error: \n{}'.format(
-                #             traceback.format_exc()
-                #         )
-                #     )
-                #     return HttpResponseRedirect(reverse('contacts:import_failure'))
-                # else:
-                #     return HttpResponseRedirect(reverse('contacts:import_success'))
-                return HttpResponseRedirect(reverse('contacts:import_success'))
+                try:
+                    mass_upload.import_contacts(path, username)
+                except:
+                    logging.debug(
+                        '\nImport Contacts Error: \n{}'.format(
+                            traceback.format_exc()
+                        )
+                    )
+                    return HttpResponseRedirect(reverse('contacts:import_failure'))
+                else:
+                    return HttpResponseRedirect(reverse('contacts:import_success'))
+                finally:
+                    default_storage.delete(path)
         else:
             print(form.errors)
     context = {'form' : form}
     return render(request, 'contacts/import_contacts.html', context)
 
+@login_required
 def import_success(request):
     tdelta = datetime.datetime.now(pytz.utc) - datetime.timedelta(seconds=7)
     contacts = Contact.objects.filter(
                 updated_at__gte=tdelta
                 ).filter(
                 added_by=request.user
-                )
+                ).order_by('-updated_at')
     count = contacts.count()
 
     date_string = datetime.datetime.now().strftime('%m%d%y')
@@ -194,6 +198,7 @@ def import_success(request):
         return HttpResponseRedirect(reverse('contacts:index'))
     return render(request, 'contacts/import_success.html', context)
 
+@login_required
 def import_failure(request):
     return render(request, 'contacts/import_failure.html', {})
 
