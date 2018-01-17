@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import default_storage
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -14,6 +15,7 @@ from django_tables2 import RequestConfig
 from django_tables2.export.export import TableExport
 from .tables import ContactTable
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
 import mass_upload
 import datetime
 import itertools
@@ -134,26 +136,29 @@ def import_contacts(request):
         if form.is_valid():
             if request.user:
                 username = request.user.username
-                for filename, f in request.FILES.items():
-                    fname = request.FILES[filename].name
-                    size = request.FILES[filename].size
-                    ext = os.path.splitext(request.FILES[filename].name)[1]
-                    logging.debug(
-                        '\n***import contacts file***\nuser: {0}\nfile: {1}\nsize: {2} bytes'.format(
-                            username ,fname, size
-                            )
+                fname = request.FILES['contact_file'].name
+                size = request.FILES['contact_file'].size
+                ext = os.path.splitext(request.FILES['contact_file'].name)[1]
+                logging.debug(
+                    '\n***import contacts file***\nuser: {0}\nfile: {1}\nsize: {2} bytes'.format(
+                        username ,fname, size
                         )
-                    # try:
-                    mass_upload.import_contacts(fname, username)
-                    # except:
-                    #     logging.debug(
-                    #         '\nImport Contacts Error: \n{}'.format(
-                    #             traceback.format_exc()
-                    #         )
-                    #     )
-                    #     return HttpResponseRedirect(reverse('contacts:import_failure'))
-                    # else:
-                    #     return HttpResponseRedirect(reverse('contacts:import_success'))
+                    )
+                save_path = os.path.join(settings.MEDIA_ROOT, 'uploads', request.FILES['contact_file'].name)
+                path = default_storage.save(save_path, request.FILES['contact_file'])
+                print(path)
+                # try:
+                # mass_upload.import_contacts(fname, username)
+                # except:
+                #     logging.debug(
+                #         '\nImport Contacts Error: \n{}'.format(
+                #             traceback.format_exc()
+                #         )
+                #     )
+                #     return HttpResponseRedirect(reverse('contacts:import_failure'))
+                # else:
+                #     return HttpResponseRedirect(reverse('contacts:import_success'))
+                return HttpResponseRedirect(reverse('contacts:import_success'))
         else:
             print(form.errors)
     context = {'form' : form}
