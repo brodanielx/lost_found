@@ -47,12 +47,9 @@ def index(request):
     }
     return render(request, 'contacts/index.html', context)
 
-def my_contacts(request, username):
-    if request.user.username != username:
-        return redirect('index')
-    contacts = Contact.objects.filter(
-        added_by=request.user
-    ).order_by('-updated_at')
+@login_required
+def all_contacts(request):
+    contacts = Contact.objects.all().order_by('-updated_at')
     count = contacts.count()
 
     date_string = datetime.datetime.now().strftime('%m%d%y')
@@ -67,21 +64,35 @@ def my_contacts(request, username):
     context = {
         'contacts' : contacts,
         'count': count,
+        'table': table
+    }
+    return render(request, 'contacts/all_contacts.html', context)
+
+def my_contacts(request, username):
+    if request.user.username != username:
+        return redirect('index')
+    contacts = Contact.objects.filter(
+        added_by=request.user
+    ).order_by('-updated_at')
+    count = contacts.count()
+
+    date_string = datetime.datetime.now().strftime('%m%d%y')
+
+    table = ContactTable(contacts)
+    table.exclude = ('added_by')
+    RequestConfig(request, paginate={'per_page': 25}).configure(table)
+    export_format = request.GET.get('_export', None)
+    if TableExport.is_valid_format(export_format):
+        exporter = TableExport(export_format, table)
+        return exporter.response('contacts_{0}.{1}'.format(date_string, export_format))
+
+    context = {
+        'contacts' : contacts,
+        'count': count,
         'user' : request.user,
         'table': table
     }
     return render(request, 'contacts/my_contacts.html', context)
-
-
-#def recent_activity(request): #only for laborers
-
-@login_required #only laborers can see
-def history(request):
-    contacts = Contact.objects.order_by('-updated_at')[:100]
-    context = {
-        'contacts' : contacts
-    }
-    return render(request, 'contacts/history.html', context)
 
 @login_required
 def show_contact(request, pk):

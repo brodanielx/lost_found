@@ -6,9 +6,11 @@ class ContactTable(tables.Table):
     edit = tables.TemplateColumn('<a href="/contacts/editcontact/{{record.id}}"><i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>', orderable=False, exclude_from_export=True)
     created_at = tables.DateColumn(format='n/j/y')
     updated_at = tables.DateColumn(format='n/j/y')
+    gender = tables.TemplateColumn('<p>{{record.gender}}</p>')
+    added_by = tables.TemplateColumn('<p>{{record.added_by.first_name}} {{record.added_by.last_name}}</p>')
     class Meta:
         model = Contact
-        fields = ('id', 'gender', 'full_name', 'phone_number_formated', 'email', 'created_at', 'updated_at', 'edit')
+        fields = ('id', 'gender', 'full_name', 'phone_number_formated', 'email', 'created_at', 'updated_at', 'added_by', 'edit')
         attrs = {
             'class': 'table table-hover',
             }
