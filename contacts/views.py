@@ -49,6 +49,8 @@ def index(request):
 
 @login_required
 def all_contacts(request):
+    if not request.user.groups.filter(name='View All').exists():
+        return HttpResponseRedirect(reverse('contacts:index'))
     contacts = Contact.objects.all().order_by('-updated_at')
     count = contacts.count()
 

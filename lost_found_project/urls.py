@@ -23,6 +23,6 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^api/user/data/$', views.user_activity),
     url(r'^contacts/', include('contacts.urls')),
-    url(r'^admin/', admin.site.urls),
+    url(r'^lost-found-contacts-over/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.simple.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

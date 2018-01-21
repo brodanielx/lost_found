@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load staticfiles %}
 {% load humanize %}
+{% load contacts_template_tags %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -51,11 +52,11 @@
               <a class="dropdown-item" href="{% url 'contacts:import_contacts' %}">Add Many</a>
             </div>
           </li>
-            <!-- {% if user.groups.get(name='View All').exists() %}
+            {% if user|has_group:"View All" %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'contacts:all_contacts' %}">All Contacts</a>
               </li>
-            {% endif %} -->
+            {% endif %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
