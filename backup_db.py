@@ -7,7 +7,7 @@ import os
 
 # How old a file needs to be in order
 # to be considered for being removed
-NO_OF_DAYS = 7
+NO_OF_DAYS = 14
 
 def sqlite3_backup(dbfile, backupdir):
     """Create timestamped database copy"""
@@ -37,13 +37,17 @@ def clean_data(backup_dir):
 
     for filename in os.listdir(backup_dir):
         backup_file = os.path.join(backup_dir, filename)
-        if os.stat(backup_file).st_ctime < (time.time() - NO_OF_DAYS * 86400):
-            if os.path.isfile(backup_file):
+        if os.path.isfile(backup_file):
+            if os.stat(backup_file).st_ctime < (time.time() - NO_OF_DAYS * 86400):
                 os.remove(backup_file)
-                print ("Deleting {}...".format(ibackup_file))
+                print ("Deleting {}...".format(backup_file))
 
 if __name__ == "__main__":
     # sqlite3_backup(args.db_file, args.backup_dir)
     # clean_data(args.backup_dir)
     #
     # print ("\nBackup update has been successful.")
+    dbfile = 'db.sqlite3'
+    backupdir = os.path.join(os.getcwd(), 'db_backups')
+    sqlite3_backup(dbfile, backupdir)
+    clean_data(backupdir)
