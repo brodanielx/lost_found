@@ -25,8 +25,15 @@ import traceback
 import json
 import os
 
-logging.basicConfig(filename='test.log', level=logging.DEBUG,
-    format='%(asctime)s:%(levelname)s:%(message)s')
+now = datetime.datetime.now()
+date_str = now.strftime('%m%d%y')
+
+view_logger = logging.getLogger(__name__)
+view_logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(message)s')
+file_handler = logging.FileHandler('view_log_{}.log'.format(date_str))
+file_handler.setFormatter(formatter)
+view_logger.addHandler(file_handler)
 
 @login_required
 def index(request):
@@ -45,6 +52,7 @@ def index(request):
         'percent_lf_added' : percent_lf_added,
         'contacts_by_user_count': contacts_by_user_count
     }
+    view_logger.info('page view: index')
     return render(request, 'contacts/index.html', context)
 
 @login_required
@@ -68,6 +76,7 @@ def all_contacts(request):
         'count': count,
         'table': table
     }
+    view_logger.info('page view: all_contacts')
     return render(request, 'contacts/all_contacts.html', context)
 
 def my_contacts(request, username):
@@ -94,6 +103,7 @@ def my_contacts(request, username):
         'user' : request.user,
         'table': table
     }
+    view_logger.info('page view: my_contacts')
     return render(request, 'contacts/my_contacts.html', context)
 
 @login_required

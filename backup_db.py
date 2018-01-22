@@ -43,10 +43,6 @@ def clean_data(backup_dir):
                 print ("Deleting {}...".format(backup_file))
 
 if __name__ == "__main__":
-    # sqlite3_backup(args.db_file, args.backup_dir)
-    # clean_data(args.backup_dir)
-    #
-    # print ("\nBackup update has been successful.")
     dbfile = 'db.sqlite3'
     backupdir = os.path.join(os.getcwd(), 'db_backups')
     sqlite3_backup(dbfile, backupdir)
