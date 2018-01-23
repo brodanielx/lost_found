@@ -28,10 +28,13 @@ import os
 now = datetime.datetime.now()
 date_str = now.strftime('%m%d%y')
 
+log_dir = os.path.join(os.getcwd(), 'logs')
+view_logger_path = os.path.join(log_dir, 'view_log_{}.log'.format(date_str))
+
 view_logger = logging.getLogger(__name__)
 view_logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(message)s')
-file_handler = logging.FileHandler('view_log_{}.log'.format(date_str))
+file_handler = logging.FileHandler(view_logger_path)
 file_handler.setFormatter(formatter)
 view_logger.addHandler(file_handler)
 
@@ -112,10 +115,16 @@ def show_contact(request, pk):
     if request.user != contact.added_by:
         return redirect('index')
     context = {'contact' : contact}
+    view_logger.info(
+        'page view: show_contact: {0} {1}'.format(
+            contact.gender, contact.full_name
+            )
+        )
     return render(request, 'contacts/contact.html', context)
 
 @login_required
 def add_contact(request):
+    view_logger.info('page view: add_contact')
     form = ContactForm()
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -124,13 +133,19 @@ def add_contact(request):
                 contact = form.save(commit=False)
                 contact.added_by = request.user
                 contact.save()
-                return HttpResponseRedirect(reverse('contacts:show_contact', args=(contact.pk,)))
+                view_logger.info(
+                    'add_contact: {} {}'.format(contact.gender, contact.full_name)
+                    )
+                return HttpResponseRedirect(
+                    reverse('contacts:show_contact', args=(contact.pk,))
+                    )
         else:
-            print(form.errors)
+            view_logger.info('add_contact_errors: {}'.format(form.errors))
     context = {'form' : form}
     return render(request, 'contacts/add_contact.html', context)
 
 def edit_contact(request, pk):
+    view_logger.info('page view: edit_contact')
     contact = get_object_or_404(Contact, pk=pk)
     if contact.added_by != request.user:
         return redirect('index')
@@ -155,6 +170,7 @@ def edit_contact(request, pk):
 def import_contacts(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect(reverse('contacts:index'))
+    view_logger.info('page view: import_contacts')
     form = ImportContactsForm()
     if request.method == 'POST':
         form = ImportContactsForm(request.POST, request.FILES)
@@ -219,10 +235,12 @@ def import_success(request):
     }
     if count == 0:
         return HttpResponseRedirect(reverse('contacts:index'))
+    view_logger.info('page view: import_success')
     return render(request, 'contacts/import_success.html', context)
 
 @login_required
 def import_failure(request):
+    view_logger.info('page view: import_failure')
     return render(request, 'contacts/import_failure.html', {})
 
 def search(request):
@@ -230,6 +248,7 @@ def search(request):
     result_count = 0
     query = ''
     if request.method == 'POST':
+        view_logger.info('page view: search')
         query = request.POST['query'].strip()
         print(query)
         if query:
