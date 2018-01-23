@@ -8,6 +8,7 @@ class ContactMethodTests(TestCase):
             username='user1',
             password='password'
         )
+        u.save()
         c = Contact(
             first_name='Elijah',
             last_name='Muhammad',
