@@ -16,8 +16,18 @@ import traceback
 import datetime
 import pytz
 
-logging.basicConfig(filename='test.log', level=logging.DEBUG,
-    format='%(asctime)s:%(levelname)s:%(message)s')
+now = datetime.datetime.now()
+date_str = now.strftime('%m%d%y')
+
+log_dir = os.path.join(os.getcwd(), 'logs')
+upload_logger_path = os.path.join(log_dir, 'upload_log_{}.log'.format(date_str))
+
+upload_logger = logging.getLogger(__name__)
+upload_logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(message)s')
+file_handler = logging.FileHandler(upload_logger_path)
+file_handler.setFormatter(formatter)
+upload_logger.addHandler(file_handler)
 
 star_line = '*'*80
 
@@ -55,13 +65,13 @@ def get_contacts_from_excel(filename):
             try:
                 contact['phone_number'] = str(int(handle_none(sheet['{}{}'.format(cols[2], row_str)].value, '')))
             except ValueError as e:
-                logging.debug('phone_number error: \n{}'.format(e))
+                upload_logger.info('phone_number error: \n{}'.format(e))
                 contact['phone_number'] = ''
 
             try:
                 contact['zip_code'] = str(int(handle_none(sheet['{}{}'.format(cols[8], row_str)].value, '')))
             except ValueError as e:
-                logging.debug('zip_code error: \n{}'.format(e))
+                upload_logger.info('zip_code error: \n{}'.format(e))
                 contact['zip_code'] = ''
 
             if (validate_contact(contact) and
@@ -72,7 +82,7 @@ def get_contacts_from_excel(filename):
             row += 1
         else:
             at_end = True
-            logging.debug(
+            upload_logger.info(
                 '{0}{1}{0}Contacts to import ({3}):{0} {2} {0}Number of contacts to import: {3}{0}{1}{0}'.format(
                     '\n',
                     star_line,
@@ -87,7 +97,7 @@ def add_contact(contact, user):
     try:
         c = Contact.objects.get_or_create(added_by=user, phone_number=contact['phone_number'])[0]
     except:
-        logging.debug('add_contact error: \n{}'.format(traceback.format_exc()))
+        upload_logger.error('add_contact error: \n{}'.format(traceback.format_exc()))
     else:
         c.gender = contact['gender']
         c.first_name = contact['first_name']
@@ -110,12 +120,12 @@ def add_contacts(contacts, username):
                     ).filter(
                     added_by=user
                     )
-        logging.debug('{0} contacts successfully updated'.format(
+        upload_logger.info('{0} contacts successfully updated'.format(
                 len(contacts_just_added)
             )
         )
         for c in contacts_just_added:
-            logging.debug(
+            upload_logger.info(
                 '- {0} - {1} - {2} - {3} -'.format(
                 c.gender, c.full_name, c.phone_number_formated, c.added_by
                 )

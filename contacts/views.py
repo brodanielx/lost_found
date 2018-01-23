@@ -157,9 +157,12 @@ def edit_contact(request, pk):
                 contact = form.save(commit=False)
                 contact.added_by = request.user
                 contact.save()
+                view_logger.info(
+                    'edit_contact: {} {}'.format(contact.gender, contact.full_name)
+                    )
                 return HttpResponseRedirect(reverse('contacts:show_contact', args=(contact.pk,)))
         else:
-            print(form.errors)
+            view_logger.info('edit_contact_errors: {}'.format(form.errors))
     context = {
         'form' : form,
         'contact' : contact
@@ -180,7 +183,7 @@ def import_contacts(request):
                 fname = request.FILES['contact_file'].name
                 size = request.FILES['contact_file'].size
                 ext = os.path.splitext(request.FILES['contact_file'].name)[1]
-                logging.debug(
+                view_logger.info(
                     '\n***import contacts file***\nuser: {0}\nfile: {1}\nsize: {2} bytes'.format(
                         username ,fname, size
                         )
@@ -191,7 +194,7 @@ def import_contacts(request):
                 try:
                     mass_upload.import_contacts(path, username)
                 except:
-                    logging.debug(
+                    view_logger.error(
                         '\nImport Contacts Error: \n{}'.format(
                             traceback.format_exc()
                         )
@@ -202,7 +205,7 @@ def import_contacts(request):
                 finally:
                     default_storage.delete(path)
         else:
-            print(form.errors)
+            view_logger.info('import_contact_form_errors: {}'.format(form.errors))
     context = {'form' : form}
     return render(request, 'contacts/import_contacts.html', context)
 
@@ -248,9 +251,7 @@ def search(request):
     result_count = 0
     query = ''
     if request.method == 'POST':
-        view_logger.info('page view: search')
         query = request.POST['query'].strip()
-        print(query)
         if query:
             contacts_full_name = Contact.objects.filter(
                 added_by=request.user
@@ -259,6 +260,7 @@ def search(request):
             ).order_by('-created_at')
             result_list = contacts_full_name
             result_count = result_list.count()
+            view_logger.info('page view: search - {} - {} result(s)'.format(query, result_count))
     context = {
         'result_list' : result_list,
         'result_count' : result_count,
