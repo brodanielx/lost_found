@@ -57,7 +57,7 @@ def format_phone_number(phone_number):
             phone_number[4:7],
             phone_number[7:]
         ]
-        phone_number = '{[0]}-{[1]}-{[2]}-{[3]}'.format(phone_number_list)
+        phone_number = '{0[0]}-{0[1]}-{0[2]}-{0[3]}'.format(phone_number_list)
     elif len(phone_number) == 10:
         phone_number_list = [
             phone_number[0:3],
@@ -65,4 +65,10 @@ def format_phone_number(phone_number):
             phone_number[6:]
         ]
         phone_number = '{0[0]}-{0[1]}-{0[2]}'.format(phone_number_list)
+    elif len(phone_number) == 7:
+        phone_number_list = [
+            phone_number[0:3],
+            phone_number[3:]
+        ]
+        phone_number = '{0[0]}-{0[1]}'.format(phone_number_list)
     return phone_number
