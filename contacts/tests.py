@@ -86,30 +86,56 @@ class ContactsShowContactViewTests(TestCase):
             response.status_code, 200
         )
 
-# class ContactsEditContactViewTests(TestCase):
-#     def setUp(self):
-#         group_name = "View All"
-#         self.group = Group(name=group_name)
-#         self.group.save()
-#         self.create = create_2_contacts_diff_users()
-#         login = self.client.login(
-#                 username=self.create['users'][0].username,
-#                 password=self.create['password']
-#             )
-#
-#     def test_contact_of_diff_user(self):
-#         c2 = self.create['contacts'][1]
-#         response = self.client.get(reverse('contacts:edit_contact', args=(c2.pk,)))
-#         self.assertEqual(
-#             response.status_code, 302
-#         )
-#
-#     def test_contact_of_same_user(self):
-#         c1 = self.create['contacts'][0]
-#         response = self.client.get(reverse('contacts:edit_contact', args=(c1.pk,)))
-#         self.assertEqual(
-#             response.status_code, 200
-#         )
+class ContactsEditContactViewTests(TestCase):
+    def setUp(self):
+        group_name = "View All"
+        self.group = Group(name=group_name)
+        self.group.save()
+        self.create = create_2_contacts_diff_users()
+        login = self.client.login(
+                username=self.create['users'][0].username,
+                password=self.create['password']
+            )
+
+    def test_contact_of_diff_user(self):
+        c2 = self.create['contacts'][1]
+        response = self.client.get(reverse('contacts:edit_contact', args=(c2.pk,)))
+        self.assertEqual(
+            response.status_code, 302
+        )
+
+    def test_contact_of_same_user(self):
+        c1 = self.create['contacts'][0]
+        response = self.client.get(reverse('contacts:edit_contact', args=(c1.pk,)))
+        self.assertEqual(
+            response.status_code, 200
+        )
+
+class ContactAllContactsViewTests(TestCase):
+    def setUp(self):
+        group_name = "View All"
+        self.group = Group(name=group_name)
+        self.group.save()
+        self.create = create_2_contacts_diff_users()
+        login = self.client.login(
+                username=self.create['users'][0].username,
+                password=self.create['password']
+            )
+
+    def test_user_not_in_group(self):
+        response = self.client.get(reverse('contacts:all_contacts'))
+        self.assertEqual(
+            response.status_code, 302, 'user not in group should not have access'
+        )
+
+    def test_user_in_group(self):
+        u1 = self.create['users'][0]
+        u1.groups.add(self.group)
+        u1.save()
+        response = self.client.get(reverse('contacts:all_contacts'))
+        self.assertEqual(
+            response.status_code, 200, 'user in group should have access'
+        )
 
 def create_user(uname, pword):
     u = User(
