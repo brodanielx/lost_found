@@ -5,16 +5,18 @@ from django.urls import reverse
 from django.test import Client
 
 class ContactMethodTests(TestCase):
-    def test_save_full_name(self):
+    def setUp(self):
         u = create_user('user1', 'pass1')
-        c = create_contact('Elijah', 'Muhammad', u)
+        create_contact('Elijah', 'Muhammad', u)
+
+    def test_save_full_name(self):
+        c = Contact.objects.get(pk=1)
         self.assertEqual(
             c.full_name, '{} {}'.format(c.first_name, c.last_name)
         )
 
     def test_save_phone_number_eleven_digits(self):
-        u = create_user('user1', 'pass1')
-        c = create_contact('Elijah', 'Muhammad', u)
+        c = Contact.objects.get(pk=1)
         c.phone_number = '18131234567'
         c.save()
         formatted = '1-813-123-4567'
@@ -23,8 +25,7 @@ class ContactMethodTests(TestCase):
         )
 
     def test_save_phone_number_ten_digits(self):
-        u = create_user('user1', 'pass1')
-        c = create_contact('Elijah', 'Muhammad', u)
+        c = Contact.objects.get(pk=1)
         c.phone_number = '8131234567'
         c.save()
         formatted = '813-123-4567'
@@ -33,8 +34,7 @@ class ContactMethodTests(TestCase):
         )
 
     def test_save_phone_number_seven_digits(self):
-        u = create_user('user1', 'pass1')
-        c = create_contact('Elijah', 'Muhammad', u)
+        c = Contact.objects.get(pk=1)
         c.phone_number = '1234567'
         c.save()
         formatted = '123-4567'
@@ -47,20 +47,69 @@ class ContactsIndexViewTests(TestCase):
         group_name = "View All"
         self.group = Group(name=group_name)
         self.group.save()
-
-    def test_user_count(self):
         create = create_2_contacts_diff_users()
         login = self.client.login(
                 username=create['users'][0].username,
                 password=create['password']
             )
+
+    def test_user_count(self):
+        u = User.objects.get(pk=1)
+        count = Contact.objects.filter(added_by=u).count()
         response = self.client.get(reverse('contacts:index'))
-        print(response)
         self.assertEqual(
-            1, 1
+            response.context['contacts_by_user_count'], count
         )
 
+class ContactsShowContactViewTests(TestCase):
+    def setUp(self):
+        group_name = "View All"
+        self.group = Group(name=group_name)
+        self.group.save()
+        self.create = create_2_contacts_diff_users()
+        login = self.client.login(
+                username=self.create['users'][0].username,
+                password=self.create['password']
+            )
 
+    def test_contact_of_diff_user(self):
+        c2 = self.create['contacts'][1]
+        response = self.client.get(reverse('contacts:show_contact', args=(c2.pk,)))
+        self.assertEqual(
+            response.status_code, 302
+        )
+
+    def test_contact_of_same_user(self):
+        c1 = self.create['contacts'][0]
+        response = self.client.get(reverse('contacts:show_contact', args=(c1.pk,)))
+        self.assertEqual(
+            response.status_code, 200
+        )
+
+# class ContactsEditContactViewTests(TestCase):
+#     def setUp(self):
+#         group_name = "View All"
+#         self.group = Group(name=group_name)
+#         self.group.save()
+#         self.create = create_2_contacts_diff_users()
+#         login = self.client.login(
+#                 username=self.create['users'][0].username,
+#                 password=self.create['password']
+#             )
+#
+#     def test_contact_of_diff_user(self):
+#         c2 = self.create['contacts'][1]
+#         response = self.client.get(reverse('contacts:edit_contact', args=(c2.pk,)))
+#         self.assertEqual(
+#             response.status_code, 302
+#         )
+#
+#     def test_contact_of_same_user(self):
+#         c1 = self.create['contacts'][0]
+#         response = self.client.get(reverse('contacts:edit_contact', args=(c1.pk,)))
+#         self.assertEqual(
+#             response.status_code, 200
+#         )
 
 def create_user(uname, pword):
     u = User(
@@ -85,7 +134,7 @@ def create_2_contacts_diff_users():
     c1 = create_contact('Elijah', 'Muhammad', u1)
     c1.phone_number = '8131234567'
     c1.save()
-    c2 = create_contact('Louis', 'Farrakhan', u1)
+    c2 = create_contact('Louis', 'Farrakhan', u2)
     c2.phone_number = '8131234568'
     c2.save()
     return {
