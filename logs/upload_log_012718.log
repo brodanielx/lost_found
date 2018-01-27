@@ -1,0 +1,117 @@
+INFO:2018-01-27 08:31:04,591:__main__:
+********************************************************************************
+Contacts to import (9):
+ [
+  {
+    "first_name": "Arthur",
+    "last_name": "",
+    "gender": "Bro",
+    "email": "",
+    "street_address": "Silver Oaks",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8134631365",
+    "zip_code": "33610"
+  },
+  {
+    "first_name": "Courtney",
+    "last_name": "",
+    "gender": "Sis",
+    "email": "",
+    "street_address": "Silver Oaks",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8135090000",
+    "zip_code": "33610"
+  },
+  {
+    "first_name": "Johnathan",
+    "last_name": "",
+    "gender": "Bro",
+    "email": "",
+    "street_address": "Silver Oaks",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8133257201",
+    "zip_code": "33610"
+  },
+  {
+    "first_name": "Kenisha",
+    "last_name": "",
+    "gender": "Sis",
+    "email": "",
+    "street_address": "Silver Oaks",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8133687985",
+    "zip_code": "33610"
+  },
+  {
+    "first_name": "Quinton",
+    "last_name": "",
+    "gender": "Bro",
+    "email": "",
+    "street_address": "Silver Oaks",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8138479761",
+    "zip_code": "33610"
+  },
+  {
+    "first_name": "Sherrod",
+    "last_name": "",
+    "gender": "Bro",
+    "email": "",
+    "street_address": "Silver Oaks",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8138503521",
+    "zip_code": "33610"
+  },
+  {
+    "first_name": "Melvin",
+    "last_name": "Johnson",
+    "gender": "Bro",
+    "email": "",
+    "street_address": "3711 E Deleuil",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8138477365",
+    "zip_code": "33610"
+  },
+  {
+    "first_name": "Cortez",
+    "last_name": "",
+    "gender": "Bro",
+    "email": "",
+    "street_address": "Pitch Pine Circle ",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8635731687",
+    "zip_code": "33617"
+  },
+  {
+    "first_name": "Rose",
+    "last_name": "",
+    "gender": "Sis",
+    "email": "",
+    "street_address": "Pitch Pine Circle ",
+    "city": "Tampa",
+    "state": "FL",
+    "phone_number": "8132934420",
+    "zip_code": "33617"
+  }
+] 
+Number of contacts to import: 9
+********************************************************************************
+
+INFO:2018-01-27 08:31:04,978:__main__:9 contacts successfully updated
+INFO:2018-01-27 08:31:04,982:__main__:- Bro - Arthur  - 813-463-1365 - brodanielx -
+INFO:2018-01-27 08:31:04,986:__main__:- Sis - Courtney  - 813-509-0000 - brodanielx -
+INFO:2018-01-27 08:31:04,990:__main__:- Bro - Johnathan  - 813-325-7201 - brodanielx -
+INFO:2018-01-27 08:31:04,994:__main__:- Sis - Kenisha  - 813-368-7985 - brodanielx -
+INFO:2018-01-27 08:31:04,997:__main__:- Bro - Quinton  - 813-847-9761 - brodanielx -
+INFO:2018-01-27 08:31:05,000:__main__:- Bro - Sherrod  - 813-850-3521 - brodanielx -
+INFO:2018-01-27 08:31:05,003:__main__:- Bro - Melvin Johnson - 813-847-7365 - brodanielx -
+INFO:2018-01-27 08:31:05,008:__main__:- Bro - Cortez  - 863-573-1687 - brodanielx -
+INFO:2018-01-27 08:31:05,013:__main__:- Sis - Rose  - 813-293-4420 - brodanielx -

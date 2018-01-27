@@ -176,5 +176,5 @@ def import_contacts(filename, username):
     add_contacts(contacts, username)
 
 if __name__ == '__main__':
-    contacts = get_contacts_from_excel('mass_upload_copy.xlsx')
+    contacts = get_contacts_from_excel('import_contacts_dx.xlsx')
     add_contacts(contacts, 'brodanielx')
