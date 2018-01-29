@@ -1,0 +1,27 @@
+INFO:2018-01-29 14:52:14,741:contacts.views:page view: index
+INFO:2018-01-29 14:59:08,507:contacts.views:page view: index
+INFO:2018-01-29 15:10:58,181:contacts.views:page view: index
+INFO:2018-01-29 15:11:17,648:contacts.views:page view: index
+INFO:2018-01-29 15:12:41,135:contacts.views:page view: index
+INFO:2018-01-29 15:13:11,052:contacts.views:page view: index
+INFO:2018-01-29 15:14:34,565:contacts.views:page view: index
+INFO:2018-01-29 15:15:06,681:contacts.views:page view: index
+INFO:2018-01-29 15:15:23,607:contacts.views:page view: index
+INFO:2018-01-29 15:15:39,700:contacts.views:page view: my_contacts
+INFO:2018-01-29 15:15:52,310:contacts.views:page view: add_contact
+INFO:2018-01-29 15:17:38,124:contacts.views:page view: add_contact
+INFO:2018-01-29 15:17:42,446:contacts.views:page view: add_contact
+INFO:2018-01-29 15:17:45,089:contacts.views:page view: my_contacts
+INFO:2018-01-29 15:17:47,317:contacts.views:page view: add_contact
+INFO:2018-01-29 15:18:43,408:contacts.views:page view: add_contact
+INFO:2018-01-29 15:18:43,436:contacts.views:add_contact: Sis Test Last
+INFO:2018-01-29 15:18:43,535:contacts.views:page view: show_contact: Sis Test Last
+INFO:2018-01-29 15:18:47,102:contacts.views:page view: edit_contact
+INFO:2018-01-29 15:18:48,872:contacts.views:page view: my_contacts
+INFO:2018-01-29 15:18:51,107:contacts.views:page view: show_contact: Sis Test Last
+INFO:2018-01-29 15:18:56,308:contacts.views:page view: index
+INFO:2018-01-29 15:18:58,285:contacts.views:page view: my_contacts
+INFO:2018-01-29 15:19:00,061:contacts.views:page view: index
+INFO:2018-01-29 15:20:40,862:contacts.views:page view: search - ken - 1 result(s)
+INFO:2018-01-29 15:20:49,562:contacts.views:page view: show_contact: Sis Kenisha 
+INFO:2018-01-29 15:20:52,314:contacts.views:page view: index
