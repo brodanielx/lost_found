@@ -22,12 +22,12 @@ def sqlite3_backup(dbfile, backupdir):
     cursor = connection.cursor()
 
     # Lock database before making a backup
-    cursor.execute('begin immediate')
+    # cursor.execute('begin immediate')
     # Make new backup file
     shutil.copyfile(dbfile, backup_file)
     print ("\nCreating {}...".format(backup_file))
     # Unlock database
-    connection.rollback()
+    # connection.rollback()
 
 def clean_data(backup_dir):
     """Delete files older than NO_OF_DAYS days"""
