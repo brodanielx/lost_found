@@ -3,6 +3,7 @@
 db.sqlite3
 *.key
 db_backups/
-test.log
+logs/
+*.log
 .coverage
 *.xlsx
