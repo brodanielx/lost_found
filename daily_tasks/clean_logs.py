@@ -5,7 +5,7 @@ def clean_logs(logs_dir):
     """Delete files older than NO_OF_DAYS days"""
     # How old a file needs to be in order
     # to be considered for being removed
-    NO_OF_DAYS = 1
+    NO_OF_DAYS = 14
 
     print ("\n------------------------------")
     print ("Cleaning up old logs")
