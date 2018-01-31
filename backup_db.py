@@ -4,11 +4,6 @@ import shutil
 import time
 import os
 
-
-# How old a file needs to be in order
-# to be considered for being removed
-NO_OF_DAYS = 14
-
 def sqlite3_backup(dbfile, backupdir):
     """Create timestamped database copy"""
 
@@ -31,6 +26,9 @@ def sqlite3_backup(dbfile, backupdir):
 
 def clean_data(backup_dir):
     """Delete files older than NO_OF_DAYS days"""
+    # How old a file needs to be in order
+    # to be considered for being removed
+    NO_OF_DAYS = 14
 
     print ("\n------------------------------")
     print ("Cleaning up old backups")
@@ -43,6 +41,8 @@ def clean_data(backup_dir):
                 print ("Deleting {}...".format(backup_file))
 
 if __name__ == "__main__":
+    path = os.path.join(os.getcwd(), 'lost_found')
+    os.chdir(path)
     dbfile = 'db.sqlite3'
     backupdir = os.path.join(os.getcwd(), 'db_backups')
     sqlite3_backup(dbfile, backupdir)
