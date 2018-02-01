@@ -13,8 +13,8 @@ class ImportContactsForm(forms.Form):
     helper = FormHelper()
     helper.form_method = 'POST'
     helper.form_class = 'form-horizontal'
-    helper.label_class = 'col-sm-2 text-right pt5'
-    helper.field_class = 'col-sm-10'
+    helper.label_class = 'col-5 col-sm-2 text-right pt5'
+    helper.field_class = 'col-12 col-sm-10'
     helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
     contact_file = forms.FileField(label="Contacts: ")
 
@@ -33,8 +33,8 @@ class ContactForm(forms.ModelForm):
     helper = FormHelper()
     helper.form_method = 'POST'
     helper.form_class = 'form-horizontal'
-    helper.label_class = 'col-lg-3 text-right pt5'
-    helper.field_class = 'col-lg-6'
+    helper.label_class = 'col-5 col-lg-3 text-right pt5'
+    helper.field_class = 'col col-lg-6'
     helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
 
     GENDER_CHOICES = (
