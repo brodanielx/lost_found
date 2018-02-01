@@ -361,3 +361,7 @@ def user_activity(request):
     }
 
     return Response(data)
+
+def error_404(request):
+        data = {}
+        return render(request,'contacts/error_404.html', data)
