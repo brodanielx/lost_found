@@ -10,7 +10,7 @@ class ContactTable(tables.Table):
     added_by = tables.TemplateColumn('<p>{{record.added_by.first_name}} {{record.added_by.last_name}}</p>')
     class Meta:
         model = Contact
-        fields = ('id', 'gender', 'full_name', 'phone_number_formated', 'email', 'created_at', 'updated_at', 'added_by', 'edit')
+        fields = ('gender', 'full_name', 'phone_number_formated', 'email', 'zip_code', 'created_at', 'updated_at', 'added_by', 'edit')
         attrs = {
-            'class': 'table table-hover',
+            'class': 'table table-hover table-striped',
             }

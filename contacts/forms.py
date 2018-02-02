@@ -16,7 +16,10 @@ class ImportContactsForm(forms.Form):
     helper.label_class = 'col-5 col-sm-2 text-right pt5'
     helper.field_class = 'col-12 col-sm-10'
     helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
-    contact_file = forms.FileField(label="Contacts: ")
+    contact_file = forms.FileField(
+        label="Contacts: ",
+        help_text="'.xlsx' files only"
+        )
 
     def clean_contact_file(self):
         contact_file = self.cleaned_data['contact_file']
@@ -47,7 +50,7 @@ class ContactForm(forms.ModelForm):
     )
 
     first_name = forms.CharField(
-        label="First Name: ",
+        label="First&nbsp;Name:&nbsp;",
         max_length=128
         )
 
@@ -58,7 +61,7 @@ class ContactForm(forms.ModelForm):
 
     phone_number = forms.CharField(
         max_length=11,
-        label='Phone Number: ',
+        label='Phone&nbsp;Number:&nbsp;',
         help_text='Numbers Only'
         )
 
@@ -69,7 +72,7 @@ class ContactForm(forms.ModelForm):
         )
 
     gender = forms.ChoiceField(
-        label='Gender: ',
+        label='Gender:&nbsp;',
         widget=forms.RadioSelect(attrs={'class': 'gender'}),
         choices=GENDER_CHOICES
         )

@@ -17,58 +17,58 @@
     </h1>
     <div class="col-sm-12">
       <div class="row mt20">
-        <div class="col-sm-3 text-right">
+        <div class="col col-sm-3 text-right">
           <p>Phone Number:</p>
         </div>
-        <div class="col-sm-9">
+        <div class="col col-sm-9">
           <p>{{ contact.phone_number_formated }}</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-3 text-right">
+        <div class="col col-sm-3 text-right">
           <p>Email Address:</p>
         </div>
-        <div class="col-sm-9">
+        <div class="col col-sm-9">
           <p>{{ contact.email }}</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-3 text-right">
+        <div class="col col-sm-3 text-right">
           <p>Street Address:</p>
         </div>
-        <div class="col-sm-9">
+        <div class="col col-sm-9">
           <p>{{ contact.street_address }}</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-3 text-right">
+        <div class="col col-sm-3 text-right">
           <p>City/State/Zip:</p>
         </div>
-        <div class="col-sm-9">
-          <p>{{ contact.city }}, {{ contact.state }} {{ contact.zip_code }}</p>
+        <div class="col col-sm-9">
+          <p>{{ contact.city }}{% if contact.city %},{% endif %} {{ contact.state }} {{ contact.zip_code }}</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-3 text-right">
+        <div class="col col-sm-3 text-right">
           <p>Added By:</p>
         </div>
-        <div class="col-sm-9">
+        <div class="col col-sm-9">
           <p>{{ contact.added_by.first_name }} {{ contact.added_by.last_name }}</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-3 text-right">
+        <div class="col col-sm-3 text-right">
           <p>Date Added:</p>
         </div>
-        <div class="col-sm-9">
+        <div class="col col-sm-9">
           <p>{{ contact.created_at|date:"n/j/y g:i A" }}</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-3 text-right">
+        <div class="col col-sm-3 text-right">
           <p>Last Modified:</p>
         </div>
-        <div class="col-sm-9">
+        <div class="col col-sm-9">
           <p>{{ contact.updated_at|date:"n/j/y g:i A" }}</p>
         </div>
       </div>

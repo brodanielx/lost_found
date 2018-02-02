@@ -22,7 +22,7 @@ class Contact(models.Model):
     street_address = models.CharField(max_length=254)
     city = models.CharField(max_length=128, default='Tampa')
     state = models.CharField(max_length=2, choices=STATE_CHOICES, default='FL')
-    zip_code = models.CharField(max_length=5)
+    zip_code = models.CharField(max_length=5, verbose_name="Zip Code")
     added_by = models.ForeignKey(User)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date Added")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Last Updated")

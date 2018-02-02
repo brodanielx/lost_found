@@ -137,7 +137,7 @@ def add_contact(request):
                     'add_contact: {} {}'.format(contact.gender, contact.full_name)
                     )
                 return HttpResponseRedirect(
-                    reverse('contacts:show_contact', args=(contact.pk,))
+                    reverse('contacts:my_contacts', args=(request.user.username,))
                     )
         else:
             view_logger.info('add_contact_errors: {}'.format(form.errors))
@@ -363,5 +363,9 @@ def user_activity(request):
     return Response(data)
 
 def error_404(request):
-        data = {}
-        return render(request,'contacts/error_404.html', data)
+        context = { 'error_type': '404' }
+        return render(request,'contacts/error_page.html', context)
+
+def error_500(request):
+        context = { 'error_type': '500' }
+        return render(request,'contacts/error_page.html', context)
