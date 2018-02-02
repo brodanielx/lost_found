@@ -1,7 +1,7 @@
 let styleChangePassword = () => {
   let label;
   let input;
-  let labelClasses = ['form-control-label', 'col-5 col-sm-3', 'text-right', 'pt5'];
+  let labelClasses = ['form-control-label', 'col-5', 'col-sm-3', 'text-right', 'pt5'];
   let inputClasses = ['textinput', 'textInput', 'form-control'];
   let fieldWrapperDivs = document.querySelectorAll('div.fieldWrapper');
   fieldWrapperDivs.forEach(div => {
