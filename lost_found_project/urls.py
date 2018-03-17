@@ -25,7 +25,11 @@ urlpatterns = [
     url(r'^contacts/', include('contacts.urls')),
     url(r'^lost-found-contacts-over/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = views.error_404
 handler500 = views.error_500

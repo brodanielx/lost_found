@@ -128,9 +128,11 @@ USE_TZ = True
 
 STATICFILES_DIRS = [STATIC_DIR, ]
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "static_root")
 
-MEDIA_ROOT = MEDIA_DIR
+# MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
 
 REGISTRATION_OPEN = False
 ACCOUNT_ACTIVATION_DAYS = 7
