@@ -188,7 +188,11 @@ def import_contacts(request):
                         username ,fname, size
                         )
                     )
-                save_path = os.path.join(settings.MEDIA_ROOT, 'uploads', request.FILES['contact_file'].name)
+                save_path = os.path.join(
+                    settings.MEDIA_ROOT,
+                    'uploads',
+                    '{}'.format(request.FILES['contact_file'].name)
+                    )
                 path = default_storage.save(save_path, request.FILES['contact_file'])
                 print(path)
                 try:

@@ -12,13 +12,13 @@ class Contact(models.Model):
     STATE_CHOICES = (
         ('FL', 'Florida'),
     )
+    gender = models.CharField(max_length=3, choices=GENDER_CHOICES)
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
     full_name = models.CharField(max_length=254, verbose_name="Name")
     phone_number = models.CharField(max_length=11, unique=True)
     phone_number_formated = models.CharField(max_length=15, verbose_name="Phone #")
     email = models.EmailField(max_length=254)
-    gender = models.CharField(max_length=3, choices=GENDER_CHOICES)
     street_address = models.CharField(max_length=254)
     city = models.CharField(max_length=128, default='Tampa')
     state = models.CharField(max_length=2, choices=STATE_CHOICES, default='FL')

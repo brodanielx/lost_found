@@ -49,6 +49,12 @@ class ContactForm(forms.ModelForm):
         ('FL', 'Florida'),
     )
 
+    gender = forms.ChoiceField(
+        label='Gender:&nbsp;',
+        widget=forms.RadioSelect(attrs={'class': 'gender'}),
+        choices=GENDER_CHOICES
+        )
+
     first_name = forms.CharField(
         label="First&nbsp;Name:&nbsp;",
         max_length=128
@@ -69,12 +75,6 @@ class ContactForm(forms.ModelForm):
         max_length=254,
         label='Email Address: ',
         required=False
-        )
-
-    gender = forms.ChoiceField(
-        label='Gender:&nbsp;',
-        widget=forms.RadioSelect(attrs={'class': 'gender'}),
-        choices=GENDER_CHOICES
         )
 
     street_address = forms.CharField(
