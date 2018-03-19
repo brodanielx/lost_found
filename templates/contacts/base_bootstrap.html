@@ -2,6 +2,16 @@
 {% load staticfiles %}
 {% load humanize %}
 {% load contacts_template_tags %}
+
+{% url 'index' as index_url %}
+{% url 'contacts:index' as contacts_index_url %}
+{% url 'contacts:my_contacts' user.username as my_contacts_url %}
+{% url 'contacts:all_contacts' as all_contacts_url %}
+{% url 'contacts:add_contact' as add_contacts_url %}
+{% url 'contacts:import_contacts' as import_contacts_url %}
+{% url 'auth_password_change' as password_change_url %}
+
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -39,13 +49,13 @@
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           {% if user.is_authenticated %}
-          <li class="nav-item">
+          <li class="nav-item {% if request.path == contacts_index_url or request.path == index_url %}active{% endif %}">
             <a class="nav-link" href="{% url 'contacts:index' %}">Home</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item {% if request.path == my_contacts_url %}active{% endif %}">
             <a class="nav-link" href="{% url 'contacts:my_contacts' user.username %}">My Contacts</a>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown {% if request.path == add_contacts_url or request.path == import_contacts_url %}active{% endif %}">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown00" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Contacts</a>
             <div class="dropdown-menu" aria-labelledby="dropdown00">
               <a class="dropdown-item" href="{% url 'contacts:add_contact' %}">Add One</a>
@@ -53,11 +63,11 @@
             </div>
           </li>
             {% if user|has_group:"View All" %}
-              <li class="nav-item">
+              <li class="nav-item {% if request.path == all_contacts_url %}active{% endif %}">
                 <a class="nav-link" href="{% url 'contacts:all_contacts' %}">All Contacts</a>
               </li>
             {% endif %}
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown {% if request.path == password_change_url %}active{% endif %}">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
               <a class="dropdown-item" href="{% url 'auth_password_change' %}">Change Password</a>
